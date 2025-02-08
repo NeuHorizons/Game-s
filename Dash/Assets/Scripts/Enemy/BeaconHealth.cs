@@ -2,30 +2,22 @@ using UnityEngine;
 
 public class BeaconHealth : MonoBehaviour
 {
-    public int health = 3;
-    private EnemySpawner spawner;
-
-    private void Start()
-    {
-        spawner = GetComponent<EnemySpawner>();
-    }
+    public int health = 5;
 
     public void TakeDamage(int damage)
     {
         health -= damage;
+        Debug.Log("Spawner took damage! Remaining health: " + health);
 
         if (health <= 0)
         {
-            DestroyBeacon();
+            DestroySpawner();
         }
     }
 
-    void DestroyBeacon()
+    void DestroySpawner()
     {
-        if (spawner != null)
-        {
-            spawner.DestroySpawner();
-        }
+        Debug.Log("Spawner destroyed!");
         Destroy(gameObject);
     }
 }

@@ -55,6 +55,14 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    void UpgradeAttack()
+    {
+        if (playerData.soulCount >= 15) // Cost of upgrade
+        {
+            playerData.soulCount -= 15;
+            playerData.attackDamageUpgrade += 1; // Increases projectile damage
+        }
+    }
     void ToggleUpgradeMenu()
     {
         upgradePanel.SetActive(!upgradePanel.activeSelf);

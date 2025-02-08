@@ -1,69 +1,76 @@
 using UnityEngine;
+using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
-    public float speed = 2f;
     public int health = 3;
-    public int soulValue = 5; // Souls dropped when killed
+    public int soulValue = 5;
+    private EnemySpawner spawner;
     private Transform player;
-    private EnemySpawner spawner; // Reference to the spawner
 
-    // Chance-based actions
-    [Range(0f, 1f)] public float teleportChance = 0.2f; // 20% chance to teleport
-    [Range(0f, 1f)] public float counterAttackChance = 0.3f; // 30% chance to counterattack
+    public float knockbackThreshold = 5f; // If velocity exceeds this, assume it was knocked away
+    public float returnDelay = 3f; // Time before starting to return
+    public float returnSpeed = 2f; // Speed at which it returns
+
+    private Rigidbody2D rb;
+    private bool returningToBattle = false;
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        rb = GetComponent<Rigidbody2D>();
+
+        if (rb == null)
+        {
+            Debug.LogError("Enemy needs a Rigidbody2D component!");
+        }
     }
 
     private void Update()
     {
-        if (player != null)
+        if (!returningToBattle && rb.velocity.magnitude > knockbackThreshold)
         {
-            transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
+            StartCoroutine(ReturnToBattle());
         }
+    }
+
+    private IEnumerator ReturnToBattle()
+    {
+        returningToBattle = true;
+        yield return new WaitForSeconds(returnDelay); // Wait before returning
+
+        while (Vector2.Distance(transform.position, player.position) > 2f) // Return until close
+        {
+            Vector2 direction = (player.position - transform.position).normalized;
+            rb.velocity = direction * returnSpeed;
+            yield return null;
+        }
+
+        rb.velocity = Vector2.zero; // Stop moving once back
+        returningToBattle = false;
     }
 
     public void TakeDamage(int damage)
     {
-        // Chance to teleport away instead of taking damage
-        if (Random.value < teleportChance)
-        {
-            TeleportAway();
-            return;
-        }
-
         health -= damage;
-
         if (health <= 0)
         {
             Die();
         }
     }
 
-    void TeleportAway()
-    {
-        Vector2 randomPosition = (Vector2)transform.position + Random.insideUnitCircle * 3f;
-        transform.position = randomPosition;
-    }
-
     void Die()
     {
-        // Grant souls to the player
         FindObjectOfType<PlayerMovement>().CollectSoul(soulValue);
-
-        // Notify the spawner (if exists)
         if (spawner != null)
         {
             spawner.EnemyDied();
         }
-
         Destroy(gameObject);
     }
 
     public void SetSpawner(EnemySpawner enemySpawner)
     {
-        spawner = enemySpawner; // Assign the spawner reference
+        spawner = enemySpawner;
     }
 }

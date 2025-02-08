@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2912636545761402984
+--- !u!1 &8396607310657914584
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,41 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5409321797240105817}
-  - component: {fileID: 4523740601575524107}
-  - component: {fileID: 4148722114464501824}
-  - component: {fileID: 4810751515779300815}
-  - component: {fileID: 4667783553566994657}
+  - component: {fileID: 3600380682358147262}
+  - component: {fileID: 7857629869014365060}
+  - component: {fileID: 8547415823650903090}
+  - component: {fileID: 9133215593641061105}
+  - component: {fileID: 5638414005594690587}
+  - component: {fileID: 2281647777341269174}
   m_Layer: 0
-  m_Name: Enemy
-  m_TagString: Untagged
+  m_Name: FusionEnemy
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5409321797240105817
+--- !u!4 &3600380682358147262
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2912636545761402984}
+  m_GameObject: {fileID: 8396607310657914584}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.501068, y: -1.0585663, z: 0}
-  m_LocalScale: {x: 0.30468, y: 0.30468, z: 0.30468}
+  m_LocalPosition: {x: -1.56, y: 2.18, z: 0}
+  m_LocalScale: {x: 0.5434577, y: 0.5434577, z: 0.5434577}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &4523740601575524107
+--- !u!212 &7857629869014365060
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2912636545761402984}
+  m_GameObject: {fileID: 8396607310657914584}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -55,7 +56,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 5b33f44fae9fdb242999a4e6965d6aaf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -87,30 +88,30 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4148722114464501824
+--- !u!114 &8547415823650903090
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2912636545761402984}
+  m_GameObject: {fileID: 8396607310657914584}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63fe2e222499b914aa648385cf12fee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
-  health: 3
-  soulValue: 5
-  teleportChance: 0.2
-  counterAttackChance: 0.3
---- !u!58 &4810751515779300815
+  health: 20
+  soulValue: 20
+  knockbackThreshold: 5
+  returnDelay: 3
+  returnSpeed: 2
+--- !u!58 &9133215593641061105
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2912636545761402984}
+  m_GameObject: {fileID: 8396607310657914584}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -139,22 +140,22 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!50 &4667783553566994657
+--- !u!50 &5638414005594690587
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2912636545761402984}
-  m_BodyType: 1
+  m_GameObject: {fileID: 8396607310657914584}
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 100
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -165,4 +166,27 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
+--- !u!114 &2281647777341269174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8396607310657914584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c114c666a450f17499f20564af697607, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slowSpeed: 1
+  chargeSpeedMax: 20
+  chargeBuildUpTime: 3
+  chargeDuration: 0.9
+  pauseBeforeCharge: 1
+  postChargePause: 3
+  chargeDetectionRange: 50
+  chargeChance: 0.3
+  chargeCooldown: 3
+  chargeCorrectionFactor: 2.38
+  minDistanceForCorrection: 20.48

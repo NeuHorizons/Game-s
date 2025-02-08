@@ -6,11 +6,13 @@ public class PlayerDataSO : ScriptableObject
     public int soulCount = 0;
     public bool dashUnlocked = false;
     public float playerSpeed = 5f;
+    public int attackDamageUpgrade = 0; // New attack upgrade variable
 
     public void ResetData()
     {
         soulCount = 0;
         dashUnlocked = false;
         playerSpeed = 5f;
+        attackDamageUpgrade = 0;
     }
 }
