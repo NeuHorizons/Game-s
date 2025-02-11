@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899df05eef767a54793d71db0404530f, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  soulCount: 5
-  dashUnlocked: 1
-  playerSpeed: 5
+  soulCount: 0
+  dashUnlocked: 0
+  playerSpeed: 6
   attackDamageUpgrade: 0

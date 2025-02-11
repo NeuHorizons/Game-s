@@ -179,9 +179,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99666d2260bba0145a9709ecb2fb93dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 2.09
   circleRadius: 3
-  rotationSpeed: 1.5
+  rotationSpeed: 2.22
   lungeSpeed: 8
   lungeDuration: 0.5
   minLungeDelay: 2

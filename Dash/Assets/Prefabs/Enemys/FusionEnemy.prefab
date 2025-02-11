@@ -181,12 +181,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slowSpeed: 1
   chargeSpeedMax: 20
-  chargeBuildUpTime: 3
-  chargeDuration: 0.9
+  chargeBuildUpTime: 0.76
+  chargeDuration: 0.48
   pauseBeforeCharge: 1
   postChargePause: 3
-  chargeDetectionRange: 50
-  chargeChance: 0.3
+  chargeDetectionRange: 50.5
+  chargeChance: 0.82
   chargeCooldown: 3
-  chargeCorrectionFactor: 2.38
-  minDistanceForCorrection: 20.48
+  chargeCorrectionFactor: 0.85
+  minDistanceForCorrection: 3.19
