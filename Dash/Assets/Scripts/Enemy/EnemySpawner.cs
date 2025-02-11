@@ -1,14 +1,22 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject enemyPrefab; // Assign enemy prefab in Unity
-    public float spawnInterval = 5f; // Time between spawns
-    public int maxEnemies = 5; // Max enemies at one time
+    [System.Serializable]
+    public class EnemySpawnData
+    {
+        public GameObject enemyPrefab;
+        public float spawnChance;
+    }
+
+    public List<EnemySpawnData> enemyList = new List<EnemySpawnData>();
+    public float spawnInterval = 5f;
+    public int maxEnemies = 5;
     private int currentEnemies = 0;
-    
-    private bool isDestroyed = false; // If the beacon is destroyed, stop spawning
+
+    private bool isDestroyed = false;
 
     private void Start()
     {
@@ -29,26 +37,59 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnEnemy()
     {
-        GameObject enemyObj = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
-        Enemy enemyScript = enemyObj.GetComponent<Enemy>();
+        if (enemyList.Count == 0) return;
 
-        if (enemyScript != null)
+        GameObject selectedEnemy = GetRandomEnemy();
+
+        if (selectedEnemy != null)
         {
-            enemyScript.SetSpawner(this); // Link the enemy to the spawner
+            GameObject enemyObj = Instantiate(selectedEnemy, transform.position, Quaternion.identity);
+            Enemy enemyScript = enemyObj.GetComponent<Enemy>();
+
+            if (enemyScript != null)
+            {
+                enemyScript.SetSpawner(this);
+            }
+
+            currentEnemies++;
+        }
+    }
+
+    GameObject GetRandomEnemy()
+    {
+        float totalWeight = 0f;
+
+
+        foreach (var enemy in enemyList)
+        {
+            totalWeight += enemy.spawnChance;
         }
 
-        currentEnemies++;
+        float randomValue = Random.Range(0, totalWeight);
+        float cumulativeWeight = 0f;
+
+
+        foreach (var enemy in enemyList)
+        {
+            cumulativeWeight += enemy.spawnChance;
+            if (randomValue <= cumulativeWeight)
+            {
+                return enemy.enemyPrefab;
+            }
+        }
+
+        return null;
     }
 
     public void EnemyDied()
     {
-        currentEnemies--; // Reduce enemy count when an enemy is destroyed
+        currentEnemies--;
     }
 
     public void DestroySpawner()
     {
         isDestroyed = true;
         StopAllCoroutines();
-        Destroy(gameObject); // Remove the spawner
+        Destroy(gameObject);
     }
 }
