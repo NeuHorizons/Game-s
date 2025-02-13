@@ -60,10 +60,7 @@ public class PlayerMovement : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
-    public void CollectSoul(int amount)
-    {
-        playerData.soulCount += amount;
-    }
+    
 
     private IEnumerator Dash()
     {
