@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899df05eef767a54793d71db0404530f, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  Health: 60
-  soulCount: 40
+  Health: 100
+  soulCount: 90
   dashUnlocked: 0
   playerSpeed: 5
   attackDamageUpgrade: 0
+  fireRate: 1

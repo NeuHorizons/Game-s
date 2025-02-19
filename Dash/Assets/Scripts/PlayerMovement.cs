@@ -7,9 +7,9 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveInput;
     private Rigidbody2D rb; 
 
-    public float dashSpeed = 10f; 
-    public float dashDuration = 0.2f; 
-    public float dashCooldown = 1f; 
+    public float dashSpeed = 80f; 
+    public float dashDuration = 0.1f; 
+    public float dashCooldown = .5f; 
     private bool isDashing = false;
     private float nextDashTime = 0f;
 

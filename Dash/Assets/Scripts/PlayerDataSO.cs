@@ -7,7 +7,8 @@ public class PlayerDataSO : ScriptableObject
     public int soulCount = 0;
     public bool dashUnlocked = false;
     public float playerSpeed = 5f;
-    public int attackDamageUpgrade = 0; // New attack upgrade variable
+    public int attackDamageUpgrade = 0;
+    public float fireRate = 0.5f; // New fire rate variable
 
     public void ResetData()
     {
@@ -16,5 +17,6 @@ public class PlayerDataSO : ScriptableObject
         dashUnlocked = false;
         playerSpeed = 5f;
         attackDamageUpgrade = 0;
+        fireRate = 0.5f;
     }
 }

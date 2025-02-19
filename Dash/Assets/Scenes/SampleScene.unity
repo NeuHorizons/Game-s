@@ -859,9 +859,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 7270124651168894428, guid: e445a38e2d1c78a4ca135666466b9f42, type: 3}
   firePoint: {fileID: 290008441}
-  fireRate: 0.5
   playerData: {fileID: 11400000, guid: d434b6c05fae0e34695d9b5f1fb5e834, type: 2}
-  aimLineLength: 3
 --- !u!114 &469225499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1156,7 +1154,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1253,7 +1251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 469225496}
-  smoothSpeed: 5
+  baseFollowSpeed: 10
   offset: {x: 0, y: 0, z: -10}
   useBounds: 0
   minBounds: {x: 0, y: 0}

@@ -3,25 +3,24 @@ using UnityEngine;
 public class PlayerShooting : MonoBehaviour
 {
     public GameObject projectilePrefab;
-    public Transform firePoint; // Make sure this is a child of the Player
-    public float fireRate = 0.5f;
+    public Transform firePoint;
     private float nextFireTime = 0f;
 
-    public PlayerDataSO playerData; // Reference to upgrade system
-    public float aimLineLength = 3f; // Length of the trajectory line
+    public PlayerDataSO playerData; // Pull fire rate from scriptable object
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && Time.time >= nextFireTime) // Left Mouse Click to shoot
+        // Check if left mouse button is held down
+        if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
         {
             Shoot();
-            nextFireTime = Time.time + fireRate;
+            nextFireTime = Time.time + playerData.fireRate; // Get fire rate from PlayerDataSO
         }
     }
 
     void Shoot()
     {
-        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation); // Correct rotation
+        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
 
         // Apply player upgrades
         Projectile projectileScript = projectile.GetComponent<Projectile>();
@@ -31,13 +30,13 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    // This function draws an aim line in the Scene view
+    // Debugging: Draw aim line in Scene view
     private void OnDrawGizmos()
     {
         if (firePoint == null) return;
 
-        Gizmos.color = Color.green; // Color of the line
-        Vector3 direction = firePoint.right; // Direction the projectile will travel
-        Gizmos.DrawLine(firePoint.position, firePoint.position + direction * aimLineLength);
+        Gizmos.color = Color.green;
+        Vector3 direction = firePoint.right;
+        Gizmos.DrawLine(firePoint.position, firePoint.position + direction * 3f);
     }
 }

@@ -10,9 +10,11 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI dashText;
     public Button speedButton;
     public Button dashButton;
-    public Button upgradeButton; // Button to open/close menu
+    public Button upgradeButton;
 
-    public PlayerDataSO playerData; // Drag PlayerData.asset here in Inspector
+    public PlayerDataSO playerData;
+    private bool isNearMerchant = false;
+    private bool isMenuOpen = false;
 
     void Start()
     {
@@ -22,12 +24,10 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        // Add button listeners
         speedButton.onClick.AddListener(UpgradeSpeed);
         dashButton.onClick.AddListener(UnlockDash);
         upgradeButton.onClick.AddListener(ToggleUpgradeMenu);
 
-        // Hide upgrade panel initially
         upgradePanel.SetActive(false);
         UpdateUI();
     }
@@ -35,6 +35,11 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         UpdateUI();
+
+        if (isNearMerchant && Input.GetKeyDown(KeyCode.E))
+        {
+            ToggleUpgradeMenu();
+        }
     }
 
     void UpgradeSpeed()
@@ -57,26 +62,40 @@ public class UIManager : MonoBehaviour
 
     void UpgradeAttack()
     {
-        if (playerData.soulCount >= 15) // Cost of upgrade
+        if (playerData.soulCount >= 15)
         {
             playerData.soulCount -= 15;
-            playerData.attackDamageUpgrade += 1; // Increases projectile damage
+            playerData.attackDamageUpgrade += 1;
         }
     }
+
     void ToggleUpgradeMenu()
     {
-        upgradePanel.SetActive(!upgradePanel.activeSelf);
+        isMenuOpen = !isMenuOpen;
+        upgradePanel.SetActive(isMenuOpen);
+
+        if (isMenuOpen)
+        {
+            Time.timeScale = 0; // Pause the game
+        }
+        else
+        {
+            Time.timeScale = 1; // Resume the game
+        }
     }
 
     void UpdateUI()
     {
-        // Update all text values based on PlayerDataSO
         soulText.text = $"Souls: {playerData.soulCount}";
         speedText.text = $"Speed: {playerData.playerSpeed}";
         dashText.text = $"Dash: {(playerData.dashUnlocked ? "Unlocked" : "Locked")}";
 
-        // Disable buttons if the player doesn't have enough souls
         speedButton.interactable = playerData.soulCount >= 10;
         dashButton.interactable = playerData.soulCount >= 20;
+    }
+
+    public void SetMerchantProximity(bool isNear)
+    {
+        isNearMerchant = isNear;
     }
 }
