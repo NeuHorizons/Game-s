@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   Health: 100
-  soulCount: 90
-  dashUnlocked: 0
-  playerSpeed: 5
+  soulCount: 50
+  dashUnlocked: 1
+  playerSpeed: 7
   attackDamageUpgrade: 0
-  fireRate: 1
+  fireRate: 0.1
