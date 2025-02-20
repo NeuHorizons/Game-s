@@ -8,7 +8,7 @@ public class PlayerDataSO : ScriptableObject
     public bool dashUnlocked = false;
     public float playerSpeed = 5f;
     public int attackDamageUpgrade = 0;
-    public float fireRate = 0.5f; // New fire rate variable
+    public float fireRate = 0.5f;
 
     public void ResetData()
     {

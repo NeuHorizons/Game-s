@@ -8,8 +8,12 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI soulText;
     public TextMeshProUGUI speedText;
     public TextMeshProUGUI dashText;
+    public TextMeshProUGUI attackText;
+    public TextMeshProUGUI fireRateText; // NEW: Fire Rate Display
     public Button speedButton;
     public Button dashButton;
+    public Button attackButton;
+    public Button fireRateButton; // NEW: Fire Rate Upgrade Button
     public Button upgradeButton;
 
     public PlayerDataSO playerData;
@@ -26,6 +30,8 @@ public class UIManager : MonoBehaviour
 
         speedButton.onClick.AddListener(UpgradeSpeed);
         dashButton.onClick.AddListener(UnlockDash);
+        attackButton.onClick.AddListener(UpgradeAttack);
+        fireRateButton.onClick.AddListener(UpgradeFireRate); // NEW: Fire Rate Upgrade
         upgradeButton.onClick.AddListener(ToggleUpgradeMenu);
 
         upgradePanel.SetActive(false);
@@ -62,10 +68,19 @@ public class UIManager : MonoBehaviour
 
     void UpgradeAttack()
     {
-        if (playerData.soulCount >= 15)
+        if (playerData.soulCount >= 20)
         {
-            playerData.soulCount -= 15;
+            playerData.soulCount -= 20;
             playerData.attackDamageUpgrade += 1;
+        }
+    }
+
+    void UpgradeFireRate()
+    {
+        if (playerData.soulCount >= 20) // Fire Rate Upgrade Cost
+        {
+            playerData.soulCount -= 20;
+            playerData.fireRate = Mathf.Max(0.1f, playerData.fireRate - 0.05f); // Decrease Fire Rate but prevent it from being too fast
         }
     }
 
@@ -76,11 +91,11 @@ public class UIManager : MonoBehaviour
 
         if (isMenuOpen)
         {
-            Time.timeScale = 0; // Pause the game
+            Time.timeScale = 0; 
         }
         else
         {
-            Time.timeScale = 1; // Resume the game
+            Time.timeScale = 1;
         }
     }
 
@@ -89,9 +104,13 @@ public class UIManager : MonoBehaviour
         soulText.text = $"Souls: {playerData.soulCount}";
         speedText.text = $"Speed: {playerData.playerSpeed}";
         dashText.text = $"Dash: {(playerData.dashUnlocked ? "Unlocked" : "Locked")}";
+        attackText.text = $"Attack: {playerData.attackDamageUpgrade}";
+        fireRateText.text = $"Fire Rate: {playerData.fireRate:F2} sec"; // NEW: Displays Fire Rate
 
         speedButton.interactable = playerData.soulCount >= 10;
         dashButton.interactable = playerData.soulCount >= 20;
+        attackButton.interactable = playerData.soulCount >= 15;
+        fireRateButton.interactable = playerData.soulCount >= 20; // NEW: Fire Rate Upgrade Button
     }
 
     public void SetMerchantProximity(bool isNear)
