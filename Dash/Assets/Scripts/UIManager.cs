@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
         dashButton.onClick.AddListener(UnlockDash);
         attackButton.onClick.AddListener(UpgradeAttack);
         fireRateButton.onClick.AddListener(UpgradeFireRate); // NEW: Fire Rate Upgrade
-        upgradeButton.onClick.AddListener(ToggleUpgradeMenu);
+        //upgradeButton.onClick.AddListener(ToggleUpgradeMenu);
 
         upgradePanel.SetActive(false);
         UpdateUI();

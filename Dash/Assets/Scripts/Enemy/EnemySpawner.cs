@@ -14,8 +14,9 @@ public class EnemySpawner : MonoBehaviour
     public List<EnemySpawnData> enemyList = new List<EnemySpawnData>();
     public float spawnInterval = 5f;
     public int maxEnemies = 5;
-    private int currentEnemies = 0;
+    public float spawnRadius = 3f; // Radius around the spawner for random spawning
 
+    private int currentEnemies = 0;
     private bool isDestroyed = false;
 
     private void Start()
@@ -43,7 +44,8 @@ public class EnemySpawner : MonoBehaviour
 
         if (selectedEnemy != null)
         {
-            GameObject enemyObj = Instantiate(selectedEnemy, transform.position, Quaternion.identity);
+            Vector3 spawnPosition = GetRandomSpawnPoint();
+            GameObject enemyObj = Instantiate(selectedEnemy, spawnPosition, Quaternion.identity);
             Enemy enemyScript = enemyObj.GetComponent<Enemy>();
 
             if (enemyScript != null)
@@ -55,10 +57,16 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    Vector3 GetRandomSpawnPoint()
+    {
+        Vector2 randomOffset = Random.insideUnitCircle * spawnRadius; // Get random point within a circle
+        Vector3 randomSpawnPosition = new Vector3(transform.position.x + randomOffset.x, transform.position.y + randomOffset.y, transform.position.z);
+        return randomSpawnPosition;
+    }
+
     GameObject GetRandomEnemy()
     {
         float totalWeight = 0f;
-
 
         foreach (var enemy in enemyList)
         {
@@ -67,7 +75,6 @@ public class EnemySpawner : MonoBehaviour
 
         float randomValue = Random.Range(0, totalWeight);
         float cumulativeWeight = 0f;
-
 
         foreach (var enemy in enemyList)
         {

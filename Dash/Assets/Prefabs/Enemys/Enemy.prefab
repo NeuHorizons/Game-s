@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 4667783553566994657}
   - component: {fileID: 3081678186351729900}
   - component: {fileID: 1689897551046985638}
+  - component: {fileID: 6237247027386456727}
+  - component: {fileID: 5595284561125650419}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -103,6 +105,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 3
   soulValue: 5
+  damageToPlayer: 10
+  knockbackForce: 5
+  knockbackDuration: 0.2
   knockbackThreshold: 5
   returnDelay: 3
   returnSpeed: 0.5
@@ -175,7 +180,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2912636545761402984}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1797014c54629dc478214f79c618c45d, type: 3}
   m_Name: 
@@ -198,3 +203,42 @@ MonoBehaviour:
   requiredEnemiesToFuse: 5
   fusedEnemyPrefab: {fileID: 8396607310657914584, guid: 6592b83fc69b2074c9727a36230bd853, type: 3}
   fusionCheckCooldown: 5
+--- !u!114 &6237247027386456727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2912636545761402984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e188026d969c9249afcf355f77feb65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visionRange: 8
+  visionAngle: 90
+  alertDuration: 3
+  fleeChance: 0.3
+  fleeSpeed: 4
+  fleeTime: 2
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  movementScript: {fileID: 3081678186351729900}
+--- !u!114 &5595284561125650419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2912636545761402984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 648ff7275b8ce3141a30982333e57f6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fleeSpeed: 5
+  fleeDuration: 2
