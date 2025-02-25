@@ -217,7 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visionRange: 8
   visionAngle: 90
-  alertDuration: 3
+  alertDuration: 10.13
   fleeChance: 0.3
   fleeSpeed: 4
   fleeTime: 2

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4756841679886035838}
   - component: {fileID: 2093784998782428675}
   - component: {fileID: 3402939564801413059}
+  - component: {fileID: 4061143238797703669}
   m_Layer: 0
   m_Name: UncomonEnemy
   m_TagString: Enemy
@@ -102,6 +103,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 3
   soulValue: 5
+  damageToPlayer: 10
+  knockbackForce: 5
+  knockbackDuration: 0.2
   knockbackThreshold: 5
   returnDelay: 3
   returnSpeed: 2
@@ -174,7 +178,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6940297141724473903}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 99666d2260bba0145a9709ecb2fb93dd, type: 3}
   m_Name: 
@@ -186,3 +190,28 @@ MonoBehaviour:
   lungeDuration: 0.5
   minLungeDelay: 2
   maxLungeDelay: 5
+--- !u!114 &4061143238797703669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6940297141724473903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e188026d969c9249afcf355f77feb65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visionRange: 8
+  visionAngle: 90
+  alertDuration: 3.91
+  fleeChance: 0.3
+  fleeSpeed: 7.78
+  fleeTime: 3.79
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  movementScript: {fileID: 3402939564801413059}
