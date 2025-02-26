@@ -147,10 +147,11 @@ MonoBehaviour:
   enemyList:
   - enemyPrefab: {fileID: 2912636545761402984, guid: 8052b6bddeac1424eb631e5d7092802a, type: 3}
     spawnChance: 90
-  - enemyPrefab: {fileID: 6940297141724473903, guid: 7e447bc576abfe049b89ba6d1bf7e494, type: 3}
+  - enemyPrefab: {fileID: 8027069877209368568, guid: 7e447bc576abfe049b89ba6d1bf7e494, type: 3}
     spawnChance: 10
   spawnInterval: 5
   maxEnemies: 10
+  spawnRadius: 3
 --- !u!114 &7155256261999239268
 MonoBehaviour:
   m_ObjectHideFlags: 0
