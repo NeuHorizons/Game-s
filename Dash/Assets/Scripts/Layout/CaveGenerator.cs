@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class CaveGenerator : MonoBehaviour
 {
@@ -8,12 +9,15 @@ public class CaveGenerator : MonoBehaviour
 
     public GameObject floorPrefab;
     public GameObject wallPrefab;
+    public GameObject roomCenterPrefab; // Object to spawn in the center of each room
+   
 
-    public int fillPercentage = 45; // % of initial walls for cellular automata
-    public int smoothingIterations = 5; // Number of smoothing passes
-    public int roomCount = 5; // Number of wider rooms
-    public int roomRadius = 3; // Base radius of each room
-    public float roomEdgeNoise = 0.5f; // Controls the jaggedness of room edges
+    public int fillPercentage = 45;
+    public int smoothingIterations = 5;
+    public int roomCount = 5;
+    public int roomRadius = 3;
+    public float roomEdgeNoise = 0.5f;
+    private List<Vector2Int> roomCenters = new List<Vector2Int>(); // Stores room center positions
 
     private int[,] grid;
 
@@ -25,26 +29,26 @@ public class CaveGenerator : MonoBehaviour
             SmoothGrid();
         }
         CreateWiderRooms();
+        ConnectDisconnectedCaves(); // Ensures tunnels are connected with at least 2 tiles width
         RenderGrid();
+        SpawnRoomCenters();
     }
 
     void GenerateRandomGrid()
     {
         grid = new int[gridWidth, gridHeight];
 
-        // Randomly fill the grid
         for (int x = 0; x < gridWidth; x++)
         {
             for (int y = 0; y < gridHeight; y++)
             {
-                // Keep edges as walls
                 if (x == 0 || y == 0 || x == gridWidth - 1 || y == gridHeight - 1)
                 {
-                    grid[x, y] = 1; // Wall
+                    grid[x, y] = 1;
                 }
                 else
                 {
-                    grid[x, y] = Random.Range(0, 100) < fillPercentage ? 1 : 0; // 1 = Wall, 0 = Floor
+                    grid[x, y] = Random.Range(0, 100) < fillPercentage ? 1 : 0;
                 }
             }
         }
@@ -59,57 +63,42 @@ public class CaveGenerator : MonoBehaviour
             for (int y = 1; y < gridHeight - 1; y++)
             {
                 int wallCount = CountWallsAround(x, y);
-
-                // Apply smoothing rules
-                if (wallCount > 4)
-                {
-                    newGrid[x, y] = 1; // Wall
-                }
-                else if (wallCount < 4)
-                {
-                    newGrid[x, y] = 0; // Floor
-                }
-                else
-                {
-                    newGrid[x, y] = grid[x, y]; // Keep current state
-                }
+                if (wallCount > 4) newGrid[x, y] = 1;
+                else if (wallCount < 4) newGrid[x, y] = 0;
+                else newGrid[x, y] = grid[x, y];
             }
         }
-
-        grid = newGrid; // Update the grid
+        grid = newGrid;
     }
 
     int CountWallsAround(int gridX, int gridY)
     {
         int count = 0;
-
         for (int x = gridX - 1; x <= gridX + 1; x++)
         {
             for (int y = gridY - 1; y <= gridY + 1; y++)
             {
                 if (x >= 0 && y >= 0 && x < gridWidth && y < gridHeight)
                 {
-                    if (grid[x, y] == 1)
-                    {
-                        count++;
-                    }
+                    if (grid[x, y] == 1) count++;
                 }
             }
         }
-
         return count;
     }
 
     void CreateWiderRooms()
     {
+        roomCenters.Clear(); // Reset room centers list
+
         for (int i = 0; i < roomCount; i++)
         {
-            // Pick a random position inside the grid
             int roomX = Random.Range(1, gridWidth - 1);
             int roomY = Random.Range(1, gridHeight - 1);
+            int maxRadius = Random.Range(roomRadius - 1, roomRadius + 2);
 
-            // Add variation to the room shape
-            int maxRadius = Random.Range(roomRadius - 1, roomRadius + 2); // Slightly vary the room radius
+            Vector2Int roomCenter = new Vector2Int(roomX, roomY);
+            roomCenters.Add(roomCenter); // Store room center position
 
             for (int x = roomX - maxRadius; x <= roomX + maxRadius; x++)
             {
@@ -117,20 +106,11 @@ public class CaveGenerator : MonoBehaviour
                 {
                     if (x > 0 && y > 0 && x < gridWidth - 1 && y < gridHeight - 1)
                     {
-                        // Calculate distance for room edge
                         float distance = Mathf.Sqrt((x - roomX) * (x - roomX) + (y - roomY) * (y - roomY));
-
-                        // Add noise-based protrusions
                         float noise = Mathf.PerlinNoise(x * 0.1f, y * 0.1f) * roomEdgeNoise;
-
-                        // Allow rocky protrusions but blend with existing terrain
                         if (distance <= maxRadius + noise)
                         {
-                            // Blend room edges with tunnels
-                            if (grid[x, y] == 1) // If it's a wall, allow carving
-                            {
-                                grid[x, y] = 0; // Carve to floor
-                            }
+                            grid[x, y] = 0;
                         }
                     }
                 }
@@ -138,6 +118,130 @@ public class CaveGenerator : MonoBehaviour
         }
     }
 
+    void ConnectDisconnectedCaves()
+    {
+        List<List<Vector2Int>> caveRegions = GetCaveRegions();
+
+        if (caveRegions.Count <= 1) return;
+
+        List<Vector2Int> mainCave = caveRegions[0];
+
+        for (int i = 1; i < caveRegions.Count; i++)
+        {
+            List<Vector2Int> otherCave = caveRegions[i];
+
+            Vector2Int bestMainPoint = Vector2Int.zero;
+            Vector2Int bestOtherPoint = Vector2Int.zero;
+            float bestDistance = float.MaxValue;
+
+            foreach (Vector2Int mainPoint in mainCave)
+            {
+                foreach (Vector2Int otherPoint in otherCave)
+                {
+                    float dist = Vector2Int.Distance(mainPoint, otherPoint);
+                    if (dist < bestDistance)
+                    {
+                        bestDistance = dist;
+                        bestMainPoint = mainPoint;
+                        bestOtherPoint = otherPoint;
+                    }
+                }
+            }
+
+            DigTunnel(bestMainPoint, bestOtherPoint);
+        }
+    }
+    
+    void SpawnRoomCenters()
+    {
+        if (roomCenterPrefab == null) return; // If no prefab assigned, skip
+
+        foreach (Vector2Int center in roomCenters)
+        {
+            Vector3 spawnPosition = new Vector3(center.x * cellSize, center.y * cellSize, 0);
+            Instantiate(roomCenterPrefab, spawnPosition, Quaternion.identity);
+        }
+    }
+
+    List<List<Vector2Int>> GetCaveRegions()
+    {
+        List<List<Vector2Int>> caveRegions = new List<List<Vector2Int>>();
+        bool[,] visited = new bool[gridWidth, gridHeight];
+
+        for (int x = 0; x < gridWidth; x++)
+        {
+            for (int y = 0; y < gridHeight; y++)
+            {
+                if (grid[x, y] == 0 && !visited[x, y])
+                {
+                    List<Vector2Int> region = FloodFill(new Vector2Int(x, y), visited);
+                    caveRegions.Add(region);
+                }
+            }
+        }
+        return caveRegions;
+    }
+
+    List<Vector2Int> FloodFill(Vector2Int start, bool[,] visited)
+    {
+        List<Vector2Int> region = new List<Vector2Int>();
+        Queue<Vector2Int> queue = new Queue<Vector2Int>();
+        queue.Enqueue(start);
+        visited[start.x, start.y] = true;
+
+        while (queue.Count > 0)
+        {
+            Vector2Int cell = queue.Dequeue();
+            region.Add(cell);
+
+            foreach (Vector2Int neighbor in GetNeighbors(cell))
+            {
+                if (!visited[neighbor.x, neighbor.y] && grid[neighbor.x, neighbor.y] == 0)
+                {
+                    visited[neighbor.x, neighbor.y] = true;
+                    queue.Enqueue(neighbor);
+                }
+            }
+        }
+
+        return region;
+    }
+
+    List<Vector2Int> GetNeighbors(Vector2Int cell)
+    {
+        List<Vector2Int> neighbors = new List<Vector2Int>();
+        Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+
+        foreach (Vector2Int dir in directions)
+        {
+            Vector2Int neighbor = cell + dir;
+            if (neighbor.x >= 0 && neighbor.y >= 0 && neighbor.x < gridWidth && neighbor.y < gridHeight)
+            {
+                neighbors.Add(neighbor);
+            }
+        }
+
+        return neighbors;
+    }
+
+    void DigTunnel(Vector2Int start, Vector2Int end)
+    {
+        Vector2Int current = start;
+
+        while (current != end)
+        {
+            grid[current.x, current.y] = 0;
+
+            // Ensure tunnel is at least 2 tiles wide by adding a random perpendicular offset
+            int offset = Random.Range(0, 2); // Either 0 or 1 to create variation
+
+            if (current.x < end.x) { grid[current.x + offset, current.y] = 0; current.x++; }
+            else if (current.x > end.x) { grid[current.x - offset, current.y] = 0; current.x--; }
+
+            if (current.y < end.y) { grid[current.x, current.y + offset] = 0; current.y++; }
+            else if (current.y > end.y) { grid[current.x, current.y - offset] = 0; current.y--; }
+        }
+    }
 
     void RenderGrid()
     {
