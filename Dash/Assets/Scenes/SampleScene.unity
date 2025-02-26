@@ -571,7 +571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   data:
-    dataString: UEsDBBQAAAgIAACIn+uf2ZuzYAIAABgFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQF1VE1z4jAM/SuMz9tOoGQpe9ullO6hhSnd6SUXYyvEg2Nn/FE+Ovz3tZyEpOzsCSE9Se9Jcj6JULYC5rRZGMGfNQfyY0DQJt8GXfAJDnSr1VqcoMW8C+4KBNGIeaVO6OAfYprVJTgj2E+1lQhOgtMrkWtTzvkWZto6G9w5lRZCyGiH2Sq4PgfkEH5upphyDNZogtYpWNNkcA4mA+XAdNBRepu22NpEcI31iklaVsCReJeStsXTGqaCpAaB9JmWUtiGD3HHKupdVwUYQMFc0CAvckB4AWJbOGzfz13muQXXaDf0+CBMmFJdlPzS9ehKanc1rQ8qfew/uo+U6qLP/8RvhjGcG10+tX2HCfZwhWC7V3pk1LrebPvuh6/EvdpTuaMbCe8FqBe9MNorHoLOeEz1FkYP3d+LtFkBbNf5a6pXTl91426n3S4SNZyj+sNMinKDodtx7VhLHccd9w8mLOZ3IByvwzYlghdZ/LHwRrf9M2oCj8JYF0KNSoX0NtobhJJ5nBmq8W6mjQLTr1CBotIdV6GOu97hVez/WY8UX0zTvYm1D+EqJbo7fJJchVZ6f9mWLfT+GWyx9E4KBd2oMfASBjXTStUn1pfUpq29ySnrpW294F9vi9zdDWk6/T7MJ1M+yfnkZpombJyMU8omyf3kjpF4fEIFnVSuaqLNeMLaVFdchUNrPySDhaFVPHdu6H4hTqW2HVKoXK+ZAVDLusKFOJjQJLxKPuciDGgNzgkVF04+MyI12wHPLoWyqHR+cIZmXZWMVOJDO/RkZBa/HBlB9+WYVwY+BOyxeVvsTM5/AVBLAwQUAAAICAAAiJ/rKKPAXm0AAAB4AAAACQAkAG1ldGEuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAatWKkstKs7Mz1OyUjDRM9IzNNdRUEovSizIKAaKGII4pZkpIHa0krGxYaKppZlhmrllinlairmupalBsomBiWlisrmBhblxslIsUH1JZUGqX2JuKkRPQGJJRlpmXkpmXrqee1FmijvIaKXYWgBQSwECLQAUAAAICAAAiJ/rn9mbs2ACAAAYBQAACwAkAAAAAAAAAAAAAAAAAAAAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwECLQAUAAAICAAAiJ/rKKPAXm0AAAB4AAAACQAkAAAAAAAAAAAAAACtAgAAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0BUEsFBgAAAAACAAIAuAAAAGUDAAAAAA==
+    dataString: UEsDBBQAAAgIAACIn+t2rT7hYgIAABsFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQF1VE1z2jAQ/SuMzk3HGKhDby0hpIckTGgnF1+EtMYaZMmjjwDJ8N+7km3s0OnJ8tu3q/d21/4gQtkamNNmZQR/1BzI9xEJZ/Jl1Acf4Eh3Wm3EO3ScV8FdGUg0cl6oExrxcUizugJnBPuhdjKQEwS9EoU21ZLvYKGtswgXVFrAkNEuZCuEPkbkiI+beUg54SnNwukdT/NkdMYjA+XA9NTk6yydT7I0bRPwvU1o+F4xSasaeBDfp6XJ5YakISo01nKCCaalFLZVRdypjq5f6Cl45oKiwygjcEsQu9KFWsPE56Kw4Fr7hp7uhMFGNRXJT910r6J236h6o9LHy9PbqKcp+vhP/GYcw4XR1UN37zi6caVge1TIqHWD9g7hu8/CvTpQuadbCa8lqCe9MtorjkFnfEj1FtK7/vVibVEC2/d4I/UK9PVgSN1w2tEED+fo/riQotrGuU0bYCN17HVcATA4lV8oOC6IbUsgGlT8sfCb7oab1AbuhbEOQ61LFeRttTeBSpaxZ8GNdwttFJhhhRoUle60xjrueoZXsf9n3dPw0bS3t7HuW7hKiXDPT5Kr0FofLtOypT48gi2fvZNCQd/qEHjCRi20Us2KDS11aRtvCsoGaTsv+OfdIpPJmM7m38ZFNudZwbOb+Sxh02Q6oyxLbrMJI3H5hEKfVK4boW17cGyqL65w0bp/yWhlaB3XnRt6WIn3StueKVShN8wAqOemwkU4GLwEP0m+5AIbtAHnhIoDJx85kZrtgeeXQnl0ujw6Q/O+Sk5q8aZdQHKyiD+PnAT4ssxrA28CDuHyrtiZnP8CUEsDBBQAAAgIAACIn+soo8BebQAAAHgAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM011FQSi9KLMgoBooYgjilmSkgdrSSsbFhoqmlmWGauWWKeVqKua6lqUGyiYGJaWKyuYGFuXGyUixQfUllQapfYm4qRE9AYklGWmZeSmZeup57UWaKO8hopdhaAFBLAQItABQAAAgIAACIn+t2rT7hYgIAABsFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAACIn+soo8BebQAAAHgAAAAJACQAAAAAAAAAAAAAAK8CAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAZwMAAAAA
     upgradeData: 
     file_cachedStartup: {fileID: 0}
     data_cachedStartup: 
@@ -599,7 +599,39 @@ MonoBehaviour:
     _MeshEdgeColor: {r: 0, g: 0, b: 0, a: 0.5}
     _AreaColors:
     - {r: 0, g: 0, b: 0, a: 0}
-  tagNames: []
+  tagNames:
+  - Basic Ground
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
+  - 26
+  - 27
+  - 28
+  - 29
+  - 30
+  - 31
   heuristic: 2
   heuristicScale: 1
   threadCount: 1
@@ -2261,7 +2293,7 @@ MonoBehaviour:
   radius: 0.66
   height: 2
   canMove: 1
-  maxSpeed: 3
+  maxSpeed: 2
   gravity: {x: 0, y: 0, z: 0}
   groundMask:
     serializedVersion: 2
@@ -2273,7 +2305,7 @@ MonoBehaviour:
   enableRotation: 1
   autoRepath:
     mode: 2
-    interval: 0.5
+    interval: 1
     sensitivity: 10
     maximumInterval: 1.54
     visualizeSensitivity: 0
@@ -2281,7 +2313,7 @@ MonoBehaviour:
   maxAcceleration: -2.5
   rotationSpeed: 360
   slowdownDistance: 0.6
-  pickNextWaypointDist: 2
+  pickNextWaypointDist: 0.44
   endReachedDistance: 0.2
   alwaysDrawGizmos: 0
   slowWhenNotFacingTarget: 1
@@ -2477,7 +2509,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2912636545761402984, guid: 8052b6bddeac1424eb631e5d7092802a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5409321797240105817, guid: 8052b6bddeac1424eb631e5d7092802a, type: 3}
       propertyPath: m_LocalPosition.x
