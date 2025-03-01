@@ -205,7 +205,7 @@ MonoBehaviour:
   fusionRadius: 0.2
   fusionChance: 0.1
   requiredEnemiesToFuse: 5
-  fusedEnemyPrefab: {fileID: 8396607310657914584, guid: 6592b83fc69b2074c9727a36230bd853, type: 3}
+  fusedEnemyPrefab: {fileID: 2720370782304611614, guid: 6592b83fc69b2074c9727a36230bd853, type: 3}
   fusionCheckCooldown: 5
 --- !u!114 &6237247027386456727
 MonoBehaviour:
@@ -226,7 +226,7 @@ MonoBehaviour:
     m_Bits: 8
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   movementScript: {fileID: 3081678186351729900}
   aiPathScript: {fileID: 2878087158686607834}
 --- !u!114 &5595284561125650419

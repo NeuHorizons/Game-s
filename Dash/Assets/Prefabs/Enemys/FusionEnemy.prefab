@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63fe2e222499b914aa648385cf12fee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 3
+  health: 20
   soulValue: 5
   damageToPlayer: 10
   knockbackForce: 5
