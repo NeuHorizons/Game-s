@@ -15,9 +15,25 @@ public class PlayerHealth : MonoBehaviour
             return;
         }
 
+        // ✅ If healthSlider is not assigned, find it automatically
+        if (healthSlider == null)
+        {
+            healthSlider = FindObjectOfType<Slider>();
+
+            if (healthSlider == null)
+            {
+                Debug.LogError("⚠️ No Health Slider found in the scene!");
+                return;
+            }
+        }
+
         playerData.Health = maxHealth; // Set initial health
-        UpdateHealthUI();
+
+        // ✅ Ensure the slider is set up correctly
+        healthSlider.maxValue = maxHealth;
+        healthSlider.value = (float)playerData.Health;
     }
+
 
     public void TakeDamage(int damage)
     {
@@ -44,7 +60,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (healthSlider != null)
         {
-            healthSlider.value = playerData.Health;
+            healthSlider.value = (float)playerData.Health; // ✅ Fix: Convert to float
         }
         else
         {

@@ -12,20 +12,11 @@ public class CameraFollow : MonoBehaviour
 
     private Rigidbody2D playerRb;
     private float dynamicSpeed;
+    private bool playerFound = false; // ✅ Tracks if the player has been found
 
     private void Start()
     {
-        if (player == null)
-        {
-            Debug.LogError("Player transform not assigned to CameraFollow!");
-            return;
-        }
-
-        playerRb = player.GetComponent<Rigidbody2D>();
-        if (playerRb == null)
-        {
-            Debug.LogError("Player does not have a Rigidbody2D. Camera may not follow properly.");
-        }
+        InvokeRepeating(nameof(FindPlayer), 0f, 0.5f); // ✅ Keeps checking every 0.5s until found
     }
 
     private void FixedUpdate()
@@ -34,7 +25,7 @@ public class CameraFollow : MonoBehaviour
 
         // Adjust camera speed dynamically based on player movement
         float playerSpeed = playerRb != null ? playerRb.velocity.magnitude : 0f;
-        dynamicSpeed = Mathf.Max(baseFollowSpeed, playerSpeed * 1.5f); // Adjust scaling as needed
+        dynamicSpeed = Mathf.Max(baseFollowSpeed, playerSpeed * 1.5f); 
 
         Vector3 targetPosition = player.position + offset;
 
@@ -45,5 +36,32 @@ public class CameraFollow : MonoBehaviour
         }
 
         transform.position = Vector3.Lerp(transform.position, targetPosition, dynamicSpeed * Time.fixedDeltaTime);
+    }
+
+    private void FindPlayer()
+    {
+        if (playerFound) return; // ✅ Stops checking once the player is found
+
+        GameObject foundPlayer = GameObject.FindGameObjectWithTag("Player");
+
+        if (foundPlayer != null)
+        {
+            player = foundPlayer.transform;
+            playerRb = player.GetComponent<Rigidbody2D>();
+            playerFound = true; // ✅ Stops searching for the player
+
+            if (playerRb == null)
+            {
+                Debug.LogError("Player found but missing Rigidbody2D. Camera may not follow properly.");
+            }
+            else
+            {
+                Debug.Log("✅ Player found! Camera following.");
+            }
+
+            // ✅ Instantly snap camera to player position on first detection
+            transform.position = player.position + offset;
+            CancelInvoke(nameof(FindPlayer)); // ✅ Stops repeating search
+        }
     }
 }

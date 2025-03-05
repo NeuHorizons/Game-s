@@ -9,15 +9,19 @@ public class CaveGenerator : MonoBehaviour
 
     public GameObject floorPrefab;
     public GameObject wallPrefab;
-    public GameObject roomCenterPrefab; // Object to spawn in the center of each room
+    public GameObject roomCenterPrefab; 
+    public GameObject playerPrefab;
    
 
+    
+    public Vector2Int spawnRoomPosition;
+    public Vector2 dungeonOffset = Vector2.zero;
     public int fillPercentage = 45;
     public int smoothingIterations = 5;
     public int roomCount = 5;
     public int roomRadius = 3;
     public float roomEdgeNoise = 0.5f;
-    private List<Vector2Int> roomCenters = new List<Vector2Int>(); // Stores room center positions
+    private List<Vector2Int> roomCenters = new List<Vector2Int>(); 
 
     private int[,] grid;
 
@@ -32,6 +36,7 @@ public class CaveGenerator : MonoBehaviour
         ConnectDisconnectedCaves(); // Ensures tunnels are connected with at least 2 tiles width
         RenderGrid();
         SpawnRoomCenters();
+        SpawnPlayer(playerPrefab);
     }
 
     void GenerateRandomGrid()
@@ -88,35 +93,63 @@ public class CaveGenerator : MonoBehaviour
     }
 
     void CreateWiderRooms()
+{
+    roomCenters.Clear(); // Reset stored room centers
+
+    // ✅ Step 1: Generate a Small, Round Spawn Room in an Isolated Area
+    spawnRoomPosition = new Vector2Int(Random.Range(5, gridWidth - 5), Random.Range(5, gridHeight - 5));
+    roomCenters.Add(spawnRoomPosition); // ✅ Mark this room as the spawn room
+
+    int spawnRoomSize = 2; // Smaller, rounder spawn room
+
+    for (int x = spawnRoomPosition.x - spawnRoomSize; x <= spawnRoomPosition.x + spawnRoomSize; x++)
     {
-        roomCenters.Clear(); // Reset room centers list
-
-        for (int i = 0; i < roomCount; i++)
+        for (int y = spawnRoomPosition.y - spawnRoomSize; y <= spawnRoomPosition.y + spawnRoomSize; y++)
         {
-            int roomX = Random.Range(1, gridWidth - 1);
-            int roomY = Random.Range(1, gridHeight - 1);
-            int maxRadius = Random.Range(roomRadius - 1, roomRadius + 2);
-
-            Vector2Int roomCenter = new Vector2Int(roomX, roomY);
-            roomCenters.Add(roomCenter); // Store room center position
-
-            for (int x = roomX - maxRadius; x <= roomX + maxRadius; x++)
+            if (x > 0 && y > 0 && x < gridWidth - 1 && y < gridHeight - 1)
             {
-                for (int y = roomY - maxRadius; y <= roomY + maxRadius; y++)
+                float distance = Vector2Int.Distance(new Vector2Int(x, y), spawnRoomPosition);
+                if (distance <= spawnRoomSize)
                 {
-                    if (x > 0 && y > 0 && x < gridWidth - 1 && y < gridHeight - 1)
+                    grid[x, y] = 0; // ✅ Clear only a round area
+                }
+            }
+        }
+    }
+
+    // ✅ Step 2: Generate Other Rooms (Ensuring They Don’t Touch the Spawn Room)
+    for (int i = 0; i < roomCount; i++)
+    {
+        Vector2Int roomCenter;
+        do
+        {
+            roomCenter = new Vector2Int(Random.Range(5, gridWidth - 5), Random.Range(5, gridHeight - 5));
+        }
+        while (Vector2Int.Distance(roomCenter, spawnRoomPosition) < (roomRadius * 3)); // Ensure rooms don't overlap the spawn
+
+        roomCenters.Add(roomCenter);
+
+        int maxRadius = Random.Range(roomRadius - 1, roomRadius + 2);
+
+        for (int x = roomCenter.x - maxRadius; x <= roomCenter.x + maxRadius; x++)
+        {
+            for (int y = roomCenter.y - maxRadius; y <= roomCenter.y + maxRadius; y++)
+            {
+                if (x > 0 && y > 0 && x < gridWidth - 1 && y < gridHeight - 1)
+                {
+                    float distance = Vector2Int.Distance(new Vector2Int(x, y), roomCenter);
+                    float noise = Mathf.PerlinNoise(x * 0.1f, y * 0.1f) * roomEdgeNoise;
+                    if (distance <= maxRadius + noise)
                     {
-                        float distance = Mathf.Sqrt((x - roomX) * (x - roomX) + (y - roomY) * (y - roomY));
-                        float noise = Mathf.PerlinNoise(x * 0.1f, y * 0.1f) * roomEdgeNoise;
-                        if (distance <= maxRadius + noise)
-                        {
-                            grid[x, y] = 0;
-                        }
+                        grid[x, y] = 0;
                     }
                 }
             }
         }
     }
+}
+
+
 
     void ConnectDisconnectedCaves()
     {
@@ -129,6 +162,13 @@ public class CaveGenerator : MonoBehaviour
         for (int i = 1; i < caveRegions.Count; i++)
         {
             List<Vector2Int> otherCave = caveRegions[i];
+
+            // ✅ Skip connecting the spawn room to the rest of the caves
+            if (otherCave.Contains(spawnRoomPosition))
+            {
+                Debug.Log("🚫 Skipping connection for spawn room.");
+                continue;
+            }
 
             Vector2Int bestMainPoint = Vector2Int.zero;
             Vector2Int bestOtherPoint = Vector2Int.zero;
@@ -151,17 +191,27 @@ public class CaveGenerator : MonoBehaviour
             DigTunnel(bestMainPoint, bestOtherPoint);
         }
     }
+
     
     void SpawnRoomCenters()
     {
-        if (roomCenterPrefab == null) return; // If no prefab assigned, skip
+        if (roomCenterPrefab == null) return;
 
         foreach (Vector2Int center in roomCenters)
         {
-            Vector3 spawnPosition = new Vector3(center.x * cellSize, center.y * cellSize, 0);
+            // ✅ Skip the spawn room to prevent enemy spawners from appearing there
+            if (center == spawnRoomPosition) 
+            {
+                Debug.Log("🚫 Skipping enemy spawner in spawn room.");
+                continue;
+            }
+
+            Vector3 spawnPosition = new Vector3((center.x * cellSize) + dungeonOffset.x, (center.y * cellSize) + dungeonOffset.y, 0);
             Instantiate(roomCenterPrefab, spawnPosition, Quaternion.identity);
         }
     }
+
+
 
     List<List<Vector2Int>> GetCaveRegions()
     {
@@ -230,9 +280,10 @@ public class CaveGenerator : MonoBehaviour
 
         while (current != end)
         {
-            grid[current.x, current.y] = 0;
+            Vector3 worldPosition = new Vector3((current.x * cellSize) + dungeonOffset.x, (current.y * cellSize) + dungeonOffset.y, 0);
+            grid[current.x, current.y] = 0; // Mark as floor
 
-            // Ensure tunnel is at least 2 tiles wide by adding a random perpendicular offset
+            // Ensure tunnel is at least 2 tiles wide by adding a perpendicular offset
             int offset = Random.Range(0, 2); // Either 0 or 1 to create variation
 
             if (current.x < end.x) { grid[current.x + offset, current.y] = 0; current.x++; }
@@ -243,16 +294,27 @@ public class CaveGenerator : MonoBehaviour
         }
     }
 
+
     void RenderGrid()
     {
         for (int x = 0; x < gridWidth; x++)
         {
             for (int y = 0; y < gridHeight; y++)
             {
-                Vector3 position = new Vector3(x * cellSize, y * cellSize, 0);
+                Vector3 position = new Vector3((x * cellSize) + dungeonOffset.x, (y * cellSize) + dungeonOffset.y, 0);
                 GameObject prefabToSpawn = grid[x, y] == 1 ? wallPrefab : floorPrefab;
                 Instantiate(prefabToSpawn, position, Quaternion.identity, transform);
             }
         }
     }
+    void SpawnPlayer(GameObject playerPrefab)
+    {
+        if (playerPrefab == null) return;
+
+        Vector3 spawnPosition = new Vector3(spawnRoomPosition.x * cellSize, spawnRoomPosition.y * cellSize, 0);
+        Instantiate(playerPrefab, spawnPosition, Quaternion.identity);
+    }
+
+
+    
 }
