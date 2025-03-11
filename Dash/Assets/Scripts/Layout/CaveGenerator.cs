@@ -33,7 +33,8 @@ public class CaveGenerator : MonoBehaviour
             SmoothGrid();
         }
         CreateWiderRooms();
-        ConnectDisconnectedCaves(); // Ensures tunnels are connected with at least 2 tiles width
+        ConnectDisconnectedCaves(); // Connect major cave regions first
+        EnsureAllRoomsConnected();    // Then ensure every room center is reachable
         RenderGrid();
         SpawnRoomCenters();
         SpawnPlayer(playerPrefab);
@@ -274,23 +275,66 @@ public class CaveGenerator : MonoBehaviour
         return neighbors;
     }
 
+    // A helper to carve a cell plus adjacent cells for a wider tunnel
+    void CarveCell(int x, int y)
+    {
+        for (int dx = -1; dx <= 1; dx++)
+        {
+            for (int dy = -1; dy <= 1; dy++)
+            {
+                int newX = x + dx;
+                int newY = y + dy;
+                // Only clear cells that are not on the border
+                if (newX > 0 && newX < gridWidth - 1 && newY > 0 && newY < gridHeight - 1)
+                {
+                    grid[newX, newY] = 0;
+                }
+            }
+        }
+    }
+
     void DigTunnel(Vector2Int start, Vector2Int end)
     {
-        Vector2Int current = start;
-
-        while (current != end)
+        // Horizontal tunnel
+        int xStep = start.x < end.x ? 1 : -1;
+        for (int x = start.x; x != end.x; x += xStep)
         {
-            Vector3 worldPosition = new Vector3((current.x * cellSize) + dungeonOffset.x, (current.y * cellSize) + dungeonOffset.y, 0);
-            grid[current.x, current.y] = 0; // Mark as floor
+            CarveCell(x, start.y);
+        }
+        // Vertical tunnel
+        int yStep = start.y < end.y ? 1 : -1;
+        for (int y = start.y; y != end.y; y += yStep)
+        {
+            CarveCell(end.x, y);
+        }
+        // Ensure the end position is carved
+        CarveCell(end.x, end.y);
+    }
+    void EnsureAllRoomsConnected()
+    {
+        // Perform a flood fill from the spawn room to get all reachable floor tiles.
+        bool[,] visited = new bool[gridWidth, gridHeight];
+        List<Vector2Int> reachable = FloodFill(spawnRoomPosition, visited);
 
-            // Ensure tunnel is at least 2 tiles wide by adding a perpendicular offset
-            int offset = Random.Range(0, 2); // Either 0 or 1 to create variation
-
-            if (current.x < end.x) { grid[current.x + offset, current.y] = 0; current.x++; }
-            else if (current.x > end.x) { grid[current.x - offset, current.y] = 0; current.x--; }
-
-            if (current.y < end.y) { grid[current.x, current.y + offset] = 0; current.y++; }
-            else if (current.y > end.y) { grid[current.x, current.y - offset] = 0; current.y--; }
+        // For each room center, if it isn’t reachable, connect it to the main cave.
+        foreach (Vector2Int roomCenter in roomCenters)
+        {
+            if (!reachable.Contains(roomCenter))
+            {
+                // Find the nearest reachable tile to this room center.
+                Vector2Int nearest = roomCenter;
+                float bestDistance = float.MaxValue;
+                foreach (Vector2Int tile in reachable)
+                {
+                    float dist = Vector2Int.Distance(roomCenter, tile);
+                    if (dist < bestDistance)
+                    {
+                        bestDistance = dist;
+                        nearest = tile;
+                    }
+                }
+                DigTunnel(roomCenter, nearest);
+            }
         }
     }
 
@@ -302,11 +346,20 @@ public class CaveGenerator : MonoBehaviour
             for (int y = 0; y < gridHeight; y++)
             {
                 Vector3 position = new Vector3((x * cellSize) + dungeonOffset.x, (y * cellSize) + dungeonOffset.y, 0);
-                GameObject prefabToSpawn = grid[x, y] == 1 ? wallPrefab : floorPrefab;
-                Instantiate(prefabToSpawn, position, Quaternion.identity, transform);
+                // If at the border, always instantiate the wall prefab.
+                if (x == 0 || y == 0 || x == gridWidth - 1 || y == gridHeight - 1)
+                {
+                    Instantiate(wallPrefab, position, Quaternion.identity, transform);
+                }
+                else
+                {
+                    GameObject prefabToSpawn = grid[x, y] == 1 ? wallPrefab : floorPrefab;
+                    Instantiate(prefabToSpawn, position, Quaternion.identity, transform);
+                }
             }
         }
     }
+
     void SpawnPlayer(GameObject playerPrefab)
     {
         if (playerPrefab == null) return;
