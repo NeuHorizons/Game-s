@@ -53,8 +53,11 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         Debug.Log("Player has died!");
-        GameManager.Instance.PlayerDied(); // ✅ Calls GameManager to handle the death screen
+        // Reset enemy behavior before handling death (or after, depending on your GameManager logic)
+        EnemyDetection.ResetHiveMind();
+        GameManager.Instance.PlayerDied(); // This could also reload the scene
     }
+
 
     private void UpdateHealthUI()
     {

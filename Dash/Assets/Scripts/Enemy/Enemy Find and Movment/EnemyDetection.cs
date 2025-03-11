@@ -80,11 +80,9 @@ public class EnemyDetection : MonoBehaviour
     public static void ResetHiveMind()
     {
         hiveMindAlert = false;
-        foreach (EnemyDetection enemy in allEnemies)
-        {
-            enemy.hasSeenPlayer = false;
-            enemy.DeactivateChase();
-        }
+        // Optionally clear the list if you're sure you want to remove all references.
+        allEnemies.Clear();
+        // If enemies are going to add themselves in Start(), they’ll repopulate this list.
     }
 
     public void ActivateChase()

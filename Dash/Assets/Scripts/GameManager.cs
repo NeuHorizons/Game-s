@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     {
         // Activate death screen
         deathScreenUI.SetActive(true);
+       
 
         // Pause the game while waiting for the player's decision
         Time.timeScale = 0;
