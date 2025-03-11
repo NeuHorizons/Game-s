@@ -53,7 +53,7 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         Debug.Log("Player has died!");
-        // Implement death behavior (e.g., respawn, game over screen, restart level)
+        GameManager.Instance.PlayerDied(); // ✅ Calls GameManager to handle the death screen
     }
 
     private void UpdateHealthUI()
