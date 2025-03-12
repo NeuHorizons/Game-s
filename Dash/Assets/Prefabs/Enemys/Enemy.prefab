@@ -220,7 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visionRange: 8
-  visionAngle: 90
+  visionAngle: 8
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
