@@ -149,9 +149,9 @@ MonoBehaviour:
     spawnChance: 90
   - enemyPrefab: {fileID: 8027069877209368568, guid: 7e447bc576abfe049b89ba6d1bf7e494, type: 3}
     spawnChance: 10
-  spawnInterval: 5
-  maxEnemies: 10
-  spawnRadius: 3
+  spawnInterval: 1.04
+  maxEnemies: 72
+  spawnRadius: 2.62
 --- !u!114 &7155256261999239268
 MonoBehaviour:
   m_ObjectHideFlags: 0

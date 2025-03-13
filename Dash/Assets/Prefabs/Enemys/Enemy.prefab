@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 3081678186351729900}
   - component: {fileID: 1689897551046985638}
   - component: {fileID: 6237247027386456727}
-  - component: {fileID: 5595284561125650419}
   - component: {fileID: 1779860853505683609}
   - component: {fileID: 6745557616466879705}
   - component: {fileID: 2878087158686607834}
@@ -203,7 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fusionRadius: 0.2
-  fusionChance: 0.1
+  fusionChance: 0.64
   requiredEnemiesToFuse: 5
   fusedEnemyPrefab: {fileID: 2720370782304611614, guid: 6592b83fc69b2074c9727a36230bd853, type: 3}
   fusionCheckCooldown: 5
@@ -229,20 +228,6 @@ MonoBehaviour:
     m_Bits: 128
   movementScript: {fileID: 3081678186351729900}
   aiPathScript: {fileID: 2878087158686607834}
---- !u!114 &5595284561125650419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2912636545761402984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 648ff7275b8ce3141a30982333e57f6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fleeSpeed: 5
-  fleeDuration: 2
 --- !u!114 &1779860853505683609
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 3595748743159884423}
   - component: {fileID: 5587279585980730532}
   - component: {fileID: 4872098706839306003}
-  - component: {fileID: 5104010171256486695}
   - component: {fileID: 5319162541780646760}
   - component: {fileID: 2588699311984779030}
   - component: {fileID: 5405648116013954849}
@@ -221,20 +220,6 @@ MonoBehaviour:
     m_Bits: 128
   movementScript: {fileID: 5587279585980730532}
   aiPathScript: {fileID: 5405648116013954849}
---- !u!114 &5104010171256486695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2720370782304611614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 648ff7275b8ce3141a30982333e57f6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fleeSpeed: 5
-  fleeDuration: 2
 --- !u!114 &5319162541780646760
 MonoBehaviour:
   m_ObjectHideFlags: 0
