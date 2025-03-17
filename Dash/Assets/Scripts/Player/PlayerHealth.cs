@@ -3,9 +3,12 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public PlayerDataSO playerData;
-    public int maxHealth = 100;
+    public PlayerDataSO playerData; // Uses consolidated stats from PlayerDataSO
+    // The maximum health is now derived from playerData.Health (baseHealth + healthModifier)
     public Slider healthSlider; // Reference to the UI Slider
+
+    // Track current health locally (separate from the maximum health provided by PlayerDataSO)
+    private int currentHealth;
 
     private void Start()
     {
@@ -15,36 +18,36 @@ public class PlayerHealth : MonoBehaviour
             return;
         }
 
-        // ✅ If healthSlider is not assigned, find it automatically
+        // If healthSlider is not assigned, attempt to find it automatically.
         if (healthSlider == null)
         {
             healthSlider = FindObjectOfType<Slider>();
-
             if (healthSlider == null)
             {
-                Debug.LogError("⚠️ No Health Slider found in the scene!");
+                Debug.LogError("No Health Slider found in the scene!");
                 return;
             }
         }
 
-        playerData.Health = maxHealth; // Set initial health
+        // Set currentHealth based on the player's maximum health from PlayerDataSO.
+        currentHealth = playerData.Health;
 
-        // ✅ Ensure the slider is set up correctly
-        healthSlider.maxValue = maxHealth;
-        healthSlider.value = (float)playerData.Health;
+        // Setup the slider with the maximum health.
+        healthSlider.maxValue = playerData.Health;
+        healthSlider.value = currentHealth;
     }
-
 
     public void TakeDamage(int damage)
     {
-        playerData.Health -= damage;
-        playerData.Health = Mathf.Clamp(playerData.Health, 0, maxHealth); // Prevent negative health
+        currentHealth -= damage;
+        // Clamp current health between 0 and the maximum health from playerData.
+        currentHealth = Mathf.Clamp(currentHealth, 0, playerData.Health);
 
-        Debug.Log("Player took " + damage + " damage. Current Health: " + playerData.Health);
+        Debug.Log("Player took " + damage + " damage. Current Health: " + currentHealth);
 
         UpdateHealthUI();
 
-        if (playerData.Health <= 0)
+        if (currentHealth <= 0)
         {
             Die();
         }
@@ -58,12 +61,13 @@ public class PlayerHealth : MonoBehaviour
         GameManager.Instance.PlayerDied(); // This could also reload the scene
     }
 
-
     private void UpdateHealthUI()
     {
         if (healthSlider != null)
         {
-            healthSlider.value = (float)playerData.Health; // ✅ Fix: Convert to float
+            // In case the player's maximum health has changed (via upgrades), update the slider's max value.
+            healthSlider.maxValue = playerData.Health;
+            healthSlider.value = currentHealth;
         }
         else
         {

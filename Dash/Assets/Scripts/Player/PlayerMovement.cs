@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float dashSpeed = 80f; 
     public float dashDuration = 0.1f; 
-    public float dashCooldown = .5f; 
+    public float dashCooldown = 0.5f; 
     private bool isDashing = false;
     private float nextDashTime = 0f;
 
@@ -47,7 +47,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isDashing) 
         {
-            rb.velocity = moveInput * playerData.playerSpeed;
+            // Use the consolidated MovementSpeed computed property from PlayerDataSO.
+            rb.velocity = moveInput * playerData.MovementSpeed;
         }
     }
 
@@ -59,8 +60,6 @@ public class PlayerMovement : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
-
-    
 
     private IEnumerator Dash()
     {
