@@ -19,7 +19,7 @@ MonoBehaviour:
   expToNextLevel: 100
   statPointsAvailable: 0
   baseMovementSpeed: 5
-  baseDamage: 0
+  baseDamage: 1
   baseHealth: 100
   baseAttackSpeed: 0.03
   baseStamina: 100

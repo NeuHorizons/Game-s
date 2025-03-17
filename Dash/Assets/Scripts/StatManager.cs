@@ -19,7 +19,7 @@ public class StatManager : MonoBehaviour
         }
 
         // For testing: press the D key to simulate dealing damage (natural progression).
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             AddDamageDealt(50);
         }
@@ -141,5 +141,83 @@ public class StatManager : MonoBehaviour
     public void AddStaminaUsage(float usage)
     {
         playerData.staminaModifier += usage * 0.03f;
+    }
+
+    // --- NEW NATURAL PROGRESSION PROCESSING METHODS ---
+
+    /// <summary>
+    /// Processes natural progression for Movement Speed.
+    /// When movementSpeedModifier reaches (baseMovementSpeed * 10),
+    /// automatically increases baseMovementSpeed by 1 and subtracts the threshold.
+    /// </summary>
+    public void ProcessMovementSpeedNaturalProgression()
+    {
+        float threshold = playerData.baseMovementSpeed * 10f;
+        while (playerData.movementSpeedModifier >= threshold)
+        {
+            playerData.movementSpeedModifier -= threshold;
+            playerData.baseMovementSpeed += 1f;
+            threshold = playerData.baseMovementSpeed * 10f;
+        }
+    }
+
+    /// <summary>
+    /// Processes natural progression for Health.
+    /// When healthModifier reaches (baseHealth * 10),
+    /// automatically increases baseHealth by 1 and subtracts the threshold.
+    /// </summary>
+    public void ProcessHealthNaturalProgression()
+    {
+        int threshold = Mathf.CeilToInt(playerData.baseHealth * 10f);
+        while (playerData.healthModifier >= threshold)
+        {
+            playerData.healthModifier -= threshold;
+            playerData.baseHealth += 1;
+            threshold = Mathf.CeilToInt(playerData.baseHealth * 10f);
+        }
+    }
+
+    /// <summary>
+    /// Processes natural progression for Attack Speed.
+    /// When attackSpeedModifier reaches (baseAttackSpeed * 10),
+    /// automatically increases baseAttackSpeed by 1 and subtracts the threshold.
+    /// </summary>
+    public void ProcessAttackSpeedNaturalProgression()
+    {
+        float threshold = playerData.baseAttackSpeed * 10f;
+        while (playerData.attackSpeedModifier >= threshold)
+        {
+            playerData.attackSpeedModifier -= threshold;
+            playerData.baseAttackSpeed += 1f;
+            threshold = playerData.baseAttackSpeed * 10f;
+        }
+    }
+
+    /// <summary>
+    /// Processes natural progression for Stamina.
+    /// When staminaModifier reaches (baseStamina * 10),
+    /// automatically increases baseStamina by 1 and subtracts the threshold.
+    /// </summary>
+    public void ProcessStaminaNaturalProgression()
+    {
+        float threshold = playerData.baseStamina * 10f;
+        while (playerData.staminaModifier >= threshold)
+        {
+            playerData.staminaModifier -= threshold;
+            playerData.baseStamina += 1f;
+            threshold = playerData.baseStamina * 10f;
+        }
+    }
+
+    /// <summary>
+    /// Processes all natural progression upgrades for every stat.
+    /// </summary>
+    public void ProcessAllNaturalProgressions()
+    {
+        ProcessDamageNaturalProgression();
+        ProcessMovementSpeedNaturalProgression();
+        ProcessHealthNaturalProgression();
+        ProcessAttackSpeedNaturalProgression();
+        ProcessStaminaNaturalProgression();
     }
 }

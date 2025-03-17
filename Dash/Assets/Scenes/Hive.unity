@@ -2160,6 +2160,7 @@ GameObject:
   - component: {fileID: 1073909827}
   - component: {fileID: 1073909826}
   - component: {fileID: 1073909828}
+  - component: {fileID: 1073909829}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2210,6 +2211,19 @@ MonoBehaviour:
   deathScreenUI: {fileID: 942487010}
   resistButton: {fileID: 400655472}
   giveUpButton: {fileID: 1955454763}
+--- !u!114 &1073909829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073909825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea797897d681cf4418af238effbb40d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: d434b6c05fae0e34695d9b5f1fb5e834, type: 2}
 --- !u!1 &1103557426
 GameObject:
   m_ObjectHideFlags: 0
@@ -2719,11 +2733,11 @@ MonoBehaviour:
   speedText: {fileID: 117799089}
   dashText: {fileID: 1640748420}
   attackText: {fileID: 1772879086}
-  fireRateText: {fileID: 921499532}
+  attackSpeedText: {fileID: 0}
   speedButton: {fileID: 472235433}
   dashButton: {fileID: 336265605}
   attackButton: {fileID: 1192161849}
-  fireRateButton: {fileID: 2075203460}
+  attackSpeedButton: {fileID: 0}
   upgradeButton: {fileID: 0}
   playerData: {fileID: 11400000, guid: d434b6c05fae0e34695d9b5f1fb5e834, type: 2}
 --- !u!114 &1873774158
