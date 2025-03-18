@@ -22,8 +22,8 @@ public class StatManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-            AddExperience(20);
+        if (Input.GetKeyDown(KeyCode.Q))
+            AddExperience(2000);
         if (Input.GetKeyDown(KeyCode.R))
             AddDamageDealt(50);
 
@@ -42,7 +42,7 @@ public class StatManager : MonoBehaviour
     void LevelUp()
     {
         playerData.currentLevel++;
-        playerData.statPointsAvailable += 5;
+        playerData.statPointsAvailable += 1;
         playerData.expToNextLevel *= 1.1f;
         OnLevelUp?.Invoke(playerData.currentLevel);
         Debug.Log("Leveled Up! New level: " + playerData.currentLevel);
