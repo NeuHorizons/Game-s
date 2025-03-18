@@ -231,7 +231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c91a46de4eb74984e929277345ee3293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData: {fileID: 11400000, guid: d434b6c05fae0e34695d9b5f1fb5e834, type: 2}
+  statManager: {fileID: 4211552428307641851, guid: c4185dff0f5fb2741b5fb215cb9b0f0e, type: 3}
   dashSpeed: 10
   dashDuration: 0.2
   dashCooldown: 1
@@ -249,7 +249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 7270124651168894428, guid: e445a38e2d1c78a4ca135666466b9f42, type: 3}
   firePoint: {fileID: 7807143972281150265}
-  playerData: {fileID: 11400000, guid: d434b6c05fae0e34695d9b5f1fb5e834, type: 2}
+  statManager: {fileID: 4211552428307641851, guid: c4185dff0f5fb2741b5fb215cb9b0f0e, type: 3}
 --- !u!114 &6640921428880220900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,5 +263,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: d434b6c05fae0e34695d9b5f1fb5e834, type: 2}
-  maxHealth: 100
+  statManager: {fileID: 4211552428307641851, guid: c4185dff0f5fb2741b5fb215cb9b0f0e, type: 3}
   healthSlider: {fileID: 0}
