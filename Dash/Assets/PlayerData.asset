@@ -15,10 +15,10 @@ MonoBehaviour:
   soulCount: 15445
   dashUnlocked: 0
   characterName: NeuHorizon
-  currentLevel: 0
-  currentExp: 0
-  expToNextLevel: 100
-  statPointsAvailable: 0
+  currentLevel: 20
+  currentExp: 272.4983
+  expToNextLevel: 672.75037
+  statPointsAvailable: 10
   currentFloor: 1
   highestFloor: 1
   baseMovementSpeed: 5
