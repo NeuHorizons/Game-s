@@ -50,17 +50,11 @@ public class StatRowUI : MonoBehaviour
 
     private void OnEnable()
     {
-        // In play mode, ensure cubes are adjusted to the desired count.
+        // In play mode, ensure we have exactly maxCubes cubes.
         if (Application.isPlaying)
         {
-            // If needed, fully reset the cubes.
-            if (forceReset)
-            {
-                forceReset = false;
-                ResetCubes();
-            }
-            EnsureCubes();
-
+            ClearCubes();
+            CreateCubes();
             // Add listener to the upgrade button if assigned.
             if (upgradeButton != null)
             {
@@ -73,15 +67,22 @@ public class StatRowUI : MonoBehaviour
 
     private void OnValidate()
     {
-        // In editor mode, if forceReset is checked, clear all cubes first.
+        // Do not spawn cubes in the Editor Scene view.
         if (!Application.isPlaying)
         {
-            if (forceReset)
-            {
-                forceReset = false;
-                ResetCubes();
-            }
-            EnsureCubes();
+            UpdateUI();
+            return;
+        }
+
+        // In play mode, clear and recreate cubes.
+        ClearCubes();
+        CreateCubes();
+
+        if (forceReset)
+        {
+            forceReset = false;
+            ClearCubes();
+            CreateCubes();
         }
         UpdateUI();
     }
@@ -94,37 +95,19 @@ public class StatRowUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Ensures that there are exactly maxCubes cubes as children.
-    /// If there are extras, they are removed.
-    /// If there are too few, new cubes are added without altering the positions of the existing ones.
-    /// </summary>
-    private void EnsureCubes()
+    private void CreateCubes()
     {
-        // Remove any extra cubes beyond maxCubes.
-        for (int i = cubes.Count - 1; i >= 0; i--)
+        cubes = new List<GameObject>();
+        if (cubePrefab == null)
         {
-            if (i >= maxCubes)
-            {
-                if (Application.isPlaying)
-                    Destroy(cubes[i]);
-                else
-                    DestroyImmediate(cubes[i]);
-                cubes.RemoveAt(i);
-            }
+            Debug.LogWarning("Cube Prefab is not assigned!");
+            return;
         }
-
-        // Add cubes if fewer than maxCubes exist.
-        while (cubes.Count < maxCubes)
+        for (int i = 0; i < maxCubes; i++)
         {
-            if (cubePrefab == null)
-            {
-                Debug.LogWarning("Cube Prefab is not assigned!");
-                return;
-            }
-            // Instantiate the new cube as a child using the prefab's local settings.
+            // Instantiate as UI children; 'false' ensures the prefab uses the parent's RectTransform settings.
             GameObject cube = Instantiate(cubePrefab, transform, false);
-            cube.name = "Cube_" + cubes.Count;
+            cube.name = "Cube_" + i;
             Image img = cube.GetComponent<Image>();
             if (img != null)
             {
@@ -134,18 +117,11 @@ public class StatRowUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Completely clears all cubes from the transform and resets the cubes list.
-    /// Use this when a full reset is needed.
-    /// </summary>
-    private void ResetCubes()
+    private void ClearCubes()
     {
         for (int i = transform.childCount - 1; i >= 0; i--)
         {
-            if (Application.isPlaying)
-                Destroy(transform.GetChild(i).gameObject);
-            else
-                DestroyImmediate(transform.GetChild(i).gameObject);
+            DestroyImmediate(transform.GetChild(i).gameObject);
         }
         cubes.Clear();
     }
