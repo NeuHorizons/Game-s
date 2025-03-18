@@ -105,9 +105,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63fe2e222499b914aa648385cf12fee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 20
-  soulValue: 5
-  damageToPlayer: 10
+  enemyBaseHealth: 20
+  soulValue: 40
+  damageToPlayer: 30
+  baseXP: 20
+  playerData: {fileID: 11400000, guid: d434b6c05fae0e34695d9b5f1fb5e834, type: 2}
   knockbackForce: 5
   knockbackDuration: 0.2
   knockbackThreshold: 5
@@ -210,14 +212,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e188026d969c9249afcf355f77feb65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visionRange: 8
-  visionAngle: 90
+  activationDistance: 8
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 128
   movementScript: {fileID: 5587279585980730532}
   aiPathScript: {fileID: 5405648116013954849}
 --- !u!114 &5319162541780646760

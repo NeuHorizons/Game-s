@@ -106,9 +106,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63fe2e222499b914aa648385cf12fee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 3
-  soulValue: 5
+  enemyBaseHealth: 2
+  soulValue: 10
   damageToPlayer: 10
+  baseXP: 10
+  playerData: {fileID: 11400000, guid: d434b6c05fae0e34695d9b5f1fb5e834, type: 2}
   knockbackForce: 5
   knockbackDuration: 0.2
   knockbackThreshold: 5
@@ -191,6 +193,7 @@ MonoBehaviour:
   speed: 2.09
   circleRadius: 3
   rotationSpeed: 2.22
+  switchSmoothSpeed: 2
   lungeSpeed: 8
   lungeDuration: 0.5
   minLungeDelay: 2
@@ -207,14 +210,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e188026d969c9249afcf355f77feb65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visionRange: 8
-  visionAngle: 90
+  activationDistance: 8
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 128
   movementScript: {fileID: 4813391847108673297}
   aiPathScript: {fileID: 4446864739946877919}
 --- !u!114 &8047084743661994723

@@ -13,6 +13,10 @@ public class PlayerDataSO : ScriptableObject
     public float expToNextLevel = 100f;
     public int statPointsAvailable = 0;
 
+    // NEW FIELDS FOR FLOOR MANAGER
+    public int currentFloor = 1;
+    public int highestFloor = 1;
+
     // Consolidated Stats:
     // Base values represent points allocated via level-ups.
     // Modifiers represent natural progression earned through gameplay.
@@ -51,6 +55,10 @@ public class PlayerDataSO : ScriptableObject
         currentExp = 0f;
         expToNextLevel = 100f;
         statPointsAvailable = 0;
+
+        // Reset floor data
+        currentFloor = 1;
+        highestFloor = 1;
 
         // Reset base stats (level-up allocated)
         baseMovementSpeed = 5f;
