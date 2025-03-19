@@ -1,16 +1,17 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FloorManager : MonoBehaviour
 {
-    [Header("Floor Tracking")]
-    [Tooltip("The player's current floor in the dungeon.")]
-    public int currentFloor = 1;
-    [Tooltip("The highest floor the player has reached (for leaderboard purposes).")]
-    public int highestFloorReached = 1;
-
-    [Header("Player Data")]
+    [Header("Player Data Reference")]
     [Tooltip("Reference to the PlayerData ScriptableObject.")]
     public PlayerDataSO playerData;
+
+    [Header("Floor Tracking")]
+    [Tooltip("The player's current floor in the dungeon.")]
+    private int currentFloor;
+    [Tooltip("The highest floor the player has reached (for leaderboard purposes).")]
+    private int highestFloorReached;
 
     [Header("Level Layout Generator")]
     [Tooltip("Reference to the LevelLayoutGenerator, which builds the dungeon layout for the current floor.")]
@@ -30,89 +31,94 @@ public class FloorManager : MonoBehaviour
 
     private void Start()
     {
-        // Make sure PlayerData is assigned.
         if (playerData == null)
         {
             Debug.LogError("PlayerDataSO is not assigned to FloorManager!");
             return;
         }
 
-        // Initialize the highest floor from player data, if available.
-        highestFloorReached = Mathf.Max(highestFloorReached, currentFloor);
-        UpdatePlayerDataFloorInfo();
+        // Load current floor & highest floor from PlayerData
+        currentFloor = playerData.currentFloor;
+        highestFloorReached = playerData.highestFloor;
 
-        // Inform the level layout generator of the initial floor.
-        if (levelLayoutGenerator != null)
+        if (currentFloor > highestFloorReached)
         {
-            levelLayoutGenerator.GenerateLevel(currentFloor);
+            highestFloorReached = currentFloor;
+            playerData.highestFloor = highestFloorReached;
         }
 
-        // Update enemy spawners for the starting floor.
+        UpdatePlayerDataFloorInfo();
+
+        if (levelLayoutGenerator != null)
+            levelLayoutGenerator.GenerateLevel(currentFloor);
+
         AdjustEnemyDifficulty();
     }
 
     /// <summary>
-    /// Call this method when the player advances to a new floor.
-    /// It updates the current floor, checks for a new highest floor,
-    /// informs the level layout generator, and adjusts enemy difficulty.
+    /// Advances to the next floor, updates PlayerData, regenerates the level, and adjusts enemy difficulty.
     /// </summary>
     public void AdvanceToNextFloor()
     {
         currentFloor++;
-
-        // Update highest floor reached if the new floor is greater.
         if (currentFloor > highestFloorReached)
         {
             highestFloorReached = currentFloor;
+            playerData.highestFloor = highestFloorReached;
         }
-        
+
         UpdatePlayerDataFloorInfo();
 
-        // Inform the level layout generator to generate the new floor layout.
         if (levelLayoutGenerator != null)
-        {
             levelLayoutGenerator.GenerateLevel(currentFloor);
-        }
 
-        // Adjust enemy spawner settings for the new floor.
         AdjustEnemyDifficulty();
     }
 
     /// <summary>
-    /// Updates the PlayerData with the current and highest floor values.
+    /// Updates PlayerData to reflect the current floor and highest floor reached.
     /// </summary>
     private void UpdatePlayerDataFloorInfo()
     {
-        // Assuming your PlayerDataSO has fields to store these values.
         playerData.currentFloor = currentFloor;
-        playerData.highestFloor = highestFloorReached;
     }
 
     /// <summary>
-    /// Adjusts enemy difficulty parameters such as spawn rate and enemy health
-    /// based on the current floor.
+    /// Adjusts enemy difficulty based on the current floor.
     /// </summary>
     private void AdjustEnemyDifficulty()
     {
-        // Calculate new spawn rate (ensuring it doesn't drop below a minimum threshold).
         float newSpawnRate = Mathf.Max(1f, baseSpawnRate - (currentFloor * spawnRateDecreasePerFloor));
-        // Calculate new enemy health.
         float newEnemyHealth = baseEnemyHealth + (currentFloor * enemyHealthIncreasePerFloor);
 
-        // Update each enemy spawner with the new difficulty settings.
         if (enemySpawners != null)
         {
             foreach (EnemySpawner spawner in enemySpawners)
             {
                 if (spawner != null)
                 {
-                    // Call the spawner's own method to update internal difficulty logic.
                     spawner.UpdateDifficulty(currentFloor);
-                    // Also update the spawn rate and enemy health using FloorManager's computed values.
                     spawner.SetSpawnRate(newSpawnRate);
                     spawner.SetEnemyHealth(newEnemyHealth);
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Called when the player enters the "hole" trigger. Advances to the next floor and reloads the scene.
+    /// </summary>
+    public void EnterNextFloor()
+    {
+        AdvanceToNextFloor();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    /// <summary>
+    /// Resets the current floor to 1 when returning to the main menu.
+    /// </summary>
+    public void ResetFloorProgress()
+    {
+        playerData.currentFloor = 1;
     }
 }
