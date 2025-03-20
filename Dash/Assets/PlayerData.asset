@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899df05eef767a54793d71db0404530f, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  soulCount: 21635
+  soulCount: 1515
   dashUnlocked: 0
   characterName: NeuHorizon
-  currentLevel: 0
-  currentExp: 6
-  expToNextLevel: 100
+  currentLevel: 60
+  currentExp: 4429.9766
+  expToNextLevel: 30448.209
   statPointsAvailable: 0
-  currentFloor: 0
-  highestFloor: 0
+  currentFloor: 3
+  highestFloor: 3
   baseMovementSpeed: 5
   baseDamage: 5
   baseHealth: 100
@@ -31,8 +31,8 @@ MonoBehaviour:
   healthNaturalPoints: 0
   attackSpeedNaturalPoints: 0
   staminaNaturalPoints: 0
-  movementSpeedLevel: 0
-  damageLevel: 0
-  healthLevel: 0
-  attackSpeedLevel: 0
-  staminaLevel: 0
+  movementSpeedLevel: 10
+  damageLevel: 10
+  healthLevel: 10
+  attackSpeedLevel: 10
+  staminaLevel: 10

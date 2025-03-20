@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class PlayerHealth : MonoBehaviour
     public StatManager statManager;
     public Slider healthSlider;
     private int currentHealth;
+    private TextMeshProUGUI healthText;
 
     void Start()
     {
@@ -29,9 +31,18 @@ public class PlayerHealth : MonoBehaviour
                 return;
             }
         }
+
+        healthText = GameObject.Find("Player Health").GetComponent<TextMeshProUGUI>();
+        if (healthText == null)
+        {
+            Debug.LogError("No TextMeshProUGUI component found on the Player Health object!");
+            return;
+        }
+
         currentHealth = statManager.FinalHealth;
         healthSlider.maxValue = statManager.FinalHealth;
         healthSlider.value = currentHealth;
+        UpdateHealthUI();
     }
 
     public void TakeDamage(int damage)
@@ -61,6 +72,15 @@ public class PlayerHealth : MonoBehaviour
         else
         {
             Debug.LogError("Health Slider not assigned in PlayerHealth!");
+        }
+
+        if (healthText != null)
+        {
+            healthText.text = $"Health: {currentHealth}";
+        }
+        else
+        {
+            Debug.LogError("Health Text not assigned in PlayerHealth!");
         }
     }
 }
