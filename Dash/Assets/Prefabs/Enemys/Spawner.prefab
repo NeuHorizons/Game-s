@@ -152,6 +152,13 @@ MonoBehaviour:
   spawnInterval: 1.04
   maxEnemies: 72
   spawnRadius: 2.62
+  currentFloor: 1
+  baseSpawnInterval: 5
+  baseMaxEnemies: 5
+  spawnIntervalDecreasePerFloor: 0.1
+  additionalEnemiesPer5Floors: 1
+  baseEnemyHealth: 100
+  enemyHealthIncreasePerFloor: 10
 --- !u!114 &7155256261999239268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,3 +173,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 50
   dropPrefab: {fileID: 5075077002694007123, guid: a85f3bba901f9bb469ab9a9e62b30366, type: 3}
+  holePrefab: {fileID: 1481395926629656183, guid: bcf1475bc651de54e9b0dd391ef25f96, type: 3}
+  holeSpawnChance: 0.05

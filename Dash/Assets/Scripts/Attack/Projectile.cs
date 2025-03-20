@@ -18,6 +18,13 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // Check if the projectile hit an object on the "wall" layer.
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         if (collision.CompareTag("Enemy"))
         {
             Enemy enemy = collision.GetComponent<Enemy>();
@@ -25,7 +32,6 @@ public class Projectile : MonoBehaviour
             {
                 enemy.TakeDamage(damage);
             }
-
             Destroy(gameObject);
         }
 
@@ -36,7 +42,6 @@ public class Projectile : MonoBehaviour
             {
                 beacon.TakeDamage(damage);
             }
-
             Destroy(gameObject);
         }
     }

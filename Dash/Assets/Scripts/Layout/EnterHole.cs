@@ -40,6 +40,7 @@ public class EnterHole2D : MonoBehaviour
             Debug.Log("E key pressed. Loading scene: " + sceneToLoad);
             EnemyDetection.ResetHiveMind();
             SceneManager.LoadScene(sceneToLoad);
+            
         }
     }
 }

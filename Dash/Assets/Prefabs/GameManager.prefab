@@ -3264,8 +3264,6 @@ GameObject:
   - component: {fileID: 4722690555588949486}
   - component: {fileID: 4671756870541318578}
   - component: {fileID: 4211552428307641851}
-  - component: {fileID: 9141585852362693849}
-  - component: {fileID: 7594712293583071361}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3317,6 +3315,7 @@ MonoBehaviour:
   deathScreenUI: {fileID: 809631221223958509}
   resistButton: {fileID: 3245338720048033976}
   giveUpButton: {fileID: 5321908397980457131}
+  playerData: {fileID: 11400000, guid: d434b6c05fae0e34695d9b5f1fb5e834, type: 2}
 --- !u!114 &4211552428307641851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3335,42 +3334,6 @@ MonoBehaviour:
   healthMultiplier: 1
   attackSpeedMultiplier: 1
   staminaMultiplier: 1
---- !u!114 &9141585852362693849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6911597744109686083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0ae678f82417914b8b32fdba76e56c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentFloor: 1
-  highestFloorReached: 1
-  playerData: {fileID: 11400000, guid: d434b6c05fae0e34695d9b5f1fb5e834, type: 2}
-  levelLayoutGenerator: {fileID: 7594712293583071361}
-  enemySpawners: []
-  baseSpawnRate: 5
-  spawnRateDecreasePerFloor: 0.1
-  baseEnemyHealth: 100
-  enemyHealthIncreasePerFloor: 10
---- !u!114 &7594712293583071361
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6911597744109686083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2c11475863a8464f9ba899c932c6002, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  standardLayoutPrefab: {fileID: 0}
-  bossLayoutPrefab: {fileID: 0}
-  useRandomGeneration: 1
 --- !u!1 &7133999756920069364
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,99 +2,143 @@ using UnityEngine;
 
 public class LevelLayoutGenerator : MonoBehaviour
 {
-    [Header("Prefabs & Layouts")]
-    [Tooltip("Prefab for the standard dungeon layout.")]
-    public GameObject standardLayoutPrefab;
-    [Tooltip("Prefab for a boss level layout.")]
-    public GameObject bossLayoutPrefab;
-    
-    [Header("Generation Options")]
-    [Tooltip("If true, generate a random layout for non-milestone floors. Otherwise, load a pre-designed layout.")]
-    public bool useRandomGeneration = true;
+    [Header("Player Data Reference")]
+    [Tooltip("Reference to the PlayerData ScriptableObject.")]
+    public PlayerDataSO playerData;
+
+    [Header("Tile Generator Reference")]
+    [Tooltip("Reference to the TileCaveGenerator already in the scene.")]
+    public TileCaveGenerator tileCaveGenerator;
+
+    // Base stats from TileCaveGenerator (used as starting values)
+    private int baseFillPercentage;
+    private int baseSmoothingIterations;
+    private int baseRoomCount;
+    private int baseRoomRadius;
+    private float baseRoomEdgeNoise;
+    private bool baseStatsSet = false;
+
+    [Header("Fill Percentage Settings (Normal Levels)")]
+    [Tooltip("Minimum fill percentage for normal levels.")]
+    public int fillPercentageMin = 40;
+    [Tooltip("Maximum fill percentage for normal levels.")]
+    public int fillPercentageMax = 60;
+
+    [Header("Room Count Increment Settings (Normal Levels)")]
+    [Tooltip("Additional room/spawner added per every 5 levels above the base.")]
+    public int additionalRoomPerFiveLevels = 1;
+
+    #region Boss Floor Adjustment Settings (Every 10th Level)
+    [Header("Boss Floor Adjustment Settings (Every 10th Level)")]
+    [Tooltip("Override fill percentage for boss floors.")]
+    public int bossFillPercentage = 40;
+    [Tooltip("Override smoothing iterations for boss floors.")]
+    public int bossSmoothingIterations = 3;
+    [Tooltip("Override room count for boss floors (e.g., 1 for a single boss room plus the player's room).")]
+    public int bossRoomCount = 1;
+    [Tooltip("Override room radius for boss floors.")]
+    public int bossRoomRadius = 5;
+    [Tooltip("Override room edge noise for boss floors.")]
+    public float bossRoomEdgeNoise = 0.2f;
+    #endregion
 
     /// <summary>
-    /// Generates the level layout based on the current floor number.
-    /// For milestone floors (e.g., every 10th floor), a boss layout is generated.
-    /// Otherwise, either a random layout or a pre-designed layout is loaded.
+    /// Reads the current floor from PlayerData and adjusts the TileCaveGenerator's parameters accordingly.
+    /// For normal levels, it sets a random fill percentage and increases room count every 5 levels.
+    /// For boss levels, it applies the boss override settings.
+    /// Then it triggers the dungeon generation.
     /// </summary>
-    /// <param name="currentFloor">The current floor level.</param>
-    public void GenerateLevel(int currentFloor)
+    public void GenerateLevel()
     {
-        Debug.Log("Generating layout for floor: " + currentFloor);
-
-        // For milestone floors (e.g., every 10th floor) generate a boss layout.
-        if (currentFloor % 10 == 0)
+        if (playerData == null)
         {
-            GenerateBossLayout(currentFloor);
+            Debug.LogWarning("PlayerData reference is not assigned!");
+            return;
+        }
+
+        // Get the current floor directly from playerData.
+        int currentFloor = playerData.currentFloor;
+        Debug.Log("Adjusting layout for floor: " + currentFloor);
+
+        if (tileCaveGenerator == null)
+        {
+            Debug.LogWarning("TileCaveGenerator reference is not assigned!");
+            return;
+        }
+
+        // Save the base stats only once.
+        SaveBaseStats(tileCaveGenerator);
+
+        if (IsBossLevel(currentFloor))
+        {
+            // Apply boss override settings.
+            AdjustBossTileCaveParameters(tileCaveGenerator);
         }
         else
         {
-            if (useRandomGeneration)
-            {
-                GenerateRandomLayout(currentFloor);
-            }
-            else
-            {
-                LoadPreDesignedLayout(currentFloor);
-            }
+            // For normal levels, adjust fill percentage and room count only.
+            AdjustStandardTileCaveParameters(tileCaveGenerator, currentFloor);
+        }
+
+        // Generate the dungeon with the modified parameters.
+        tileCaveGenerator.GenerateDungeon();
+    }
+
+    /// <summary>
+    /// Returns true if the current level is considered a boss level (every 10th level).
+    /// </summary>
+    private bool IsBossLevel(int floor)
+    {
+        return floor % 10 == 0;
+    }
+
+    /// <summary>
+    /// Saves the base values from the TileCaveGenerator so adjustments are made relative to the original settings.
+    /// This is done only once.
+    /// </summary>
+    private void SaveBaseStats(TileCaveGenerator tileGenerator)
+    {
+        if (!baseStatsSet)
+        {
+            baseFillPercentage = tileGenerator.fillPercentage;
+            baseSmoothingIterations = tileGenerator.smoothingIterations;
+            baseRoomCount = tileGenerator.roomCount;
+            baseRoomRadius = tileGenerator.roomRadius;
+            baseRoomEdgeNoise = tileGenerator.roomEdgeNoise;
+            baseStatsSet = true;
+            Debug.Log("Base stats saved from TileCaveGenerator.");
         }
     }
 
     /// <summary>
-    /// Generates a random dungeon layout for the given floor.
+    /// Adjusts parameters for normal (non-boss) levels.
+    /// Sets a random fill percentage between the defined min and max,
+    /// and increases room count by one extra room (and spawner) for every 5 levels.
+    /// The player's room is always spawned.
     /// </summary>
-    /// <param name="currentFloor">The current floor level.</param>
-    private void GenerateRandomLayout(int currentFloor)
+    private void AdjustStandardTileCaveParameters(TileCaveGenerator tileGenerator, int currentFloor)
     {
-        Debug.Log("Generating random layout for floor: " + currentFloor);
+        // Randomly choose a fill percentage between the minimum and maximum values.
+        tileGenerator.fillPercentage = Random.Range(fillPercentageMin, fillPercentageMax + 1);
 
-        if (standardLayoutPrefab != null)
-        {
-            // Here you might add custom logic for randomization.
-            Instantiate(standardLayoutPrefab, Vector3.zero, Quaternion.identity);
-        }
-        else
-        {
-            Debug.LogWarning("No standard layout prefab assigned!");
-        }
+        // Increase room count: base count plus one extra room per every 5 levels.
+        tileGenerator.roomCount = baseRoomCount + ((currentFloor - 1) / 5) * additionalRoomPerFiveLevels;
+
+        Debug.Log("Adjusted standard TileCaveGenerator parameters for floor " + currentFloor);
     }
 
     /// <summary>
-    /// Generates a boss level layout for milestone floors.
+    /// Adjusts parameters for boss levels using the override values.
+    /// This can be configured so that a boss level spawns one big room (and one spawner) plus the player's room.
     /// </summary>
-    /// <param name="currentFloor">The current floor level.</param>
-    private void GenerateBossLayout(int currentFloor)
+    private void AdjustBossTileCaveParameters(TileCaveGenerator tileGenerator)
     {
-        Debug.Log("Generating boss layout for floor: " + currentFloor);
+        tileGenerator.fillPercentage = bossFillPercentage;
+        tileGenerator.smoothingIterations = bossSmoothingIterations;
+        tileGenerator.roomCount = bossRoomCount;
+        tileGenerator.roomRadius = bossRoomRadius;
+        tileGenerator.roomEdgeNoise = bossRoomEdgeNoise;
 
-        if (bossLayoutPrefab != null)
-        {
-            Instantiate(bossLayoutPrefab, Vector3.zero, Quaternion.identity);
-        }
-        else
-        {
-            Debug.LogWarning("No boss layout prefab assigned!");
-        }
-    }
-
-    /// <summary>
-    /// Loads a pre-designed layout for the given floor.
-    /// This assumes you have predesigned layouts stored in Resources under "PreDesignedLayouts".
-    /// </summary>
-    /// <param name="currentFloor">The current floor level.</param>
-    private void LoadPreDesignedLayout(int currentFloor)
-    {
-        Debug.Log("Loading pre-designed layout for floor: " + currentFloor);
-
-        // Example: Layouts are stored in Resources/PreDesignedLayouts/Floor_X where X is the floor number.
-        GameObject layoutPrefab = Resources.Load<GameObject>("PreDesignedLayouts/Floor_" + currentFloor);
-        if (layoutPrefab != null)
-        {
-            Instantiate(layoutPrefab, Vector3.zero, Quaternion.identity);
-        }
-        else
-        {
-            Debug.LogWarning("No pre-designed layout found for floor: " + currentFloor);
-        }
+        Debug.Log("Adjusted boss TileCaveGenerator parameters for a boss level.");
     }
 }

@@ -122,6 +122,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &553363019 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4586232554303572659, guid: c4185dff0f5fb2741b5fb215cb9b0f0e, type: 3}
+  m_PrefabInstance: {fileID: 1612353458}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &560245190
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,11 +171,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 756cc34617b92be43b9efdee0387ff91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoGenerateOnStart: 0
   gridWidth: 100
   gridHeight: 100
   cellSize: 1
   playerPrefab: {fileID: 6312136305305517164, guid: 0138e627fcdecec448f5d7b5b49be0ac, type: 3}
-  floorManager: {fileID: 819158430}
   spawnRoomPosition: {x: 0, y: 0}
   dungeonOffset: {x: 0, y: 0}
   fillPercentage: 45
@@ -252,17 +257,6 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
---- !u!114 &819158430 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9141585852362693849, guid: c4185dff0f5fb2741b5fb215cb9b0f0e, type: 3}
-  m_PrefabInstance: {fileID: 1612353458}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0ae678f82417914b8b32fdba76e56c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &898144356
 GameObject:
   m_ObjectHideFlags: 0
@@ -629,14 +623,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4671756870541318578, guid: c4185dff0f5fb2741b5fb215cb9b0f0e, type: 3}
-      propertyPath: playerData
-      value: 
-      objectReference: {fileID: 11400000, guid: d434b6c05fae0e34695d9b5f1fb5e834, type: 2}
     - target: {fileID: 6911597744109686083, guid: c4185dff0f5fb2741b5fb215cb9b0f0e, type: 3}
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8214329452986893607, guid: c4185dff0f5fb2741b5fb215cb9b0f0e, type: 3}
+      propertyPath: upgradePanel
+      value: 
+      objectReference: {fileID: 553363019}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -845,6 +839,80 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
+--- !u!1 &1956366450
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1956366453}
+  - component: {fileID: 1956366452}
+  - component: {fileID: 1956366451}
+  m_Layer: 0
+  m_Name: FloorManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1956366451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956366450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2c11475863a8464f9ba899c932c6002, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: d434b6c05fae0e34695d9b5f1fb5e834, type: 2}
+  tileCaveGenerator: {fileID: 560245192}
+  fillPercentageMin: 34
+  fillPercentageMax: 50
+  additionalRoomPerFiveLevels: 1
+  bossFillPercentage: 26
+  bossSmoothingIterations: 3
+  bossRoomCount: 1
+  bossRoomRadius: 21
+  bossRoomEdgeNoise: 0.2
+--- !u!114 &1956366452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956366450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ae678f82417914b8b32fdba76e56c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: d434b6c05fae0e34695d9b5f1fb5e834, type: 2}
+  levelLayoutGenerator: {fileID: 1956366451}
+  enemySpawners: []
+  baseSpawnRate: 5
+  spawnRateDecreasePerFloor: 0.1
+  baseEnemyHealth: 100
+  enemyHealthIncreasePerFloor: 10
+--- !u!4 &1956366453
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956366450}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.9940863, y: 15.838119, z: 0.21076795}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2040895354
 GameObject:
   m_ObjectHideFlags: 0
@@ -987,3 +1055,4 @@ SceneRoots:
   - {fileID: 560245191}
   - {fileID: 2040895355}
   - {fileID: 1945937753}
+  - {fileID: 1956366453}

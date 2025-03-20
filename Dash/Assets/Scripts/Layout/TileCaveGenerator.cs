@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public class TileCaveGenerator : MonoBehaviour
 {
+    [Header("Generation Settings")]
+    [Tooltip("If true, the dungeon will generate automatically on Start(). Disable this if using an external generator.")]
+    public bool autoGenerateOnStart = false;
+
     public int gridWidth = 50;
     public int gridHeight = 50;
     public float cellSize = 1f;
@@ -34,6 +38,18 @@ public class TileCaveGenerator : MonoBehaviour
     public GameObject roomCenterSpawnerPrefab; // The spawner prefab to be placed at room centers.
 
     void Start()
+    {
+        if(autoGenerateOnStart)
+        {
+            GenerateDungeon();
+        }
+    }
+
+    /// <summary>
+    /// Public method to generate the dungeon.
+    /// This method encapsulates the full dungeon-generation process.
+    /// </summary>
+    public void GenerateDungeon()
     {
         GenerateRandomGrid();
         for (int i = 0; i < smoothingIterations; i++)

@@ -5,7 +5,25 @@ public class NextFloor : MonoBehaviour
 {
     public string sceneToLoad; // Scene to reload
     private bool playerInRange = false;
-    public FloorManager floorManager; // Assign this in the Inspector
+    public FloorManager floorManager; // Reference to FloorManager
+
+    // In Awake, automatically look for a GameObject named "FloorManager" if none is assigned.
+    private void Awake()
+    {
+        if (floorManager == null)
+        {
+            GameObject fm = GameObject.Find("FloorManager");
+            if (fm != null)
+            {
+                floorManager = fm.GetComponent<FloorManager>();
+                Debug.Log("FloorManager found and assigned.");
+            }
+            else
+            {
+                Debug.LogWarning("FloorManager not found in the scene.");
+            }
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {

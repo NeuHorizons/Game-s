@@ -50,7 +50,7 @@ public class FloorManager : MonoBehaviour
         UpdatePlayerDataFloorInfo();
 
         if (levelLayoutGenerator != null)
-            levelLayoutGenerator.GenerateLevel(currentFloor);
+            levelLayoutGenerator.GenerateLevel();
 
         AdjustEnemyDifficulty();
     }
@@ -70,7 +70,7 @@ public class FloorManager : MonoBehaviour
         UpdatePlayerDataFloorInfo();
 
         if (levelLayoutGenerator != null)
-            levelLayoutGenerator.GenerateLevel(currentFloor);
+            levelLayoutGenerator.GenerateLevel();
 
         AdjustEnemyDifficulty();
     }
